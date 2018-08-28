@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="zoomin.png">resource/zoomin.png</file>
+        <file alias="zoomout.png">resource/zoomout.png</file>
+        <file alias="rotateleft.png">resource/rotateleft.png</file>
+        <file alias="rotateright.png">resource/rotateright.png</file>
+    </qresource>
+</RCC>

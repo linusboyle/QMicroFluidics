@@ -1,0 +1,4 @@
+*.swp
+*ycm*
+build/*
+*pro.user
