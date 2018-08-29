@@ -15,6 +15,7 @@ public:
 
 private:
     ConfigurationEntity* entity;
+    QHash<int,QGraphicsItem*> items;
 };
 
 #endif // PIPESCENE_H

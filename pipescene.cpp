@@ -1,5 +1,10 @@
 #include "pipescene.h"
 #include "configurationentity.h"
+#include "pipe.h"
+
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
 
 #define PIPE_LENGTH 50
 #define PIPE_WIDTH 10
@@ -23,38 +28,66 @@ void PipeScene::reset(ConfigurationEntity *_entity){
 
     int baseX=0;
     int baseY=0;
-    QPen pen(Qt::NoPen);
-    QBrush brush(Qt::black);
 
-    //draw the complete pipes first
-    for(int i=0;i<size;++i) { //rows
-        for(int j=0;j<size-1;++j) {//each row
-            //TOOD
-            //replace using custom item
-            addRect(baseX+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,baseY+PIPE_WIDTH*i+PIPE_LENGTH*i,PIPE_LENGTH,PIPE_WIDTH,pen,brush);
+    int id = 0;
+    //columns
+    for(int i=0;i<size;++i) {
+        for(int j=0;j<size-1;++j) {
+            Pipe* m_pipe = new Pipe(id,baseX+PIPE_WIDTH*i+PIPE_LENGTH*i,baseY+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,PIPE_WIDTH,PIPE_LENGTH);
+            addItem(m_pipe);
+            items.insert(id,m_pipe);
+            id++;
         }
     }
 
-    //likewise for columns
-    for(int i=0;i<size;++i) {
-        for(int j=0;j<size-1;++j) {
-            addRect(baseX+PIPE_WIDTH*i+PIPE_LENGTH*i,baseY+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,PIPE_WIDTH,PIPE_LENGTH,pen,brush);
+    for(int j=0;j<size-1;++j) {//each row
+        for(int i=0;i<size;++i) { //rows
+            Pipe* m_pipe = new Pipe(id,baseX+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,baseY+PIPE_WIDTH*i+PIPE_LENGTH*i,PIPE_LENGTH,PIPE_WIDTH);
+            addItem(m_pipe);
+            items.insert(id,m_pipe);
+            id++;
         }
     }
 
     int indexIN1 = entity->getInput1Pos();
-    addRect(baseX+PIPE_WIDTH*indexIN1+PIPE_LENGTH*indexIN1,baseY-PIPE_LENGTH,PIPE_WIDTH,PIPE_LENGTH,pen,brush);
+    Pipe* input1_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexIN1+PIPE_LENGTH*indexIN1,baseY-PIPE_LENGTH,PIPE_WIDTH,PIPE_LENGTH,Pipe::PIPE_INPUT);
+    addItem(input1_pipe);
+    items.insert(id,input1_pipe);
+    id++;
+
     int indexIN2 = entity->getInput2Pos();
-    addRect(baseX+PIPE_WIDTH*indexIN2+PIPE_LENGTH*indexIN2,baseY-PIPE_LENGTH,PIPE_WIDTH,PIPE_LENGTH,pen,brush);
+    Pipe* input2_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexIN2+PIPE_LENGTH*indexIN2,baseY-PIPE_LENGTH,PIPE_WIDTH,PIPE_LENGTH,Pipe::PIPE_INPUT);
+    addItem(input2_pipe);
+    items.insert(id,input2_pipe);
+    id++;
 
     int indexOUT1 = entity->getOutput1Pos();
-    addRect(baseX+PIPE_WIDTH*indexOUT1+PIPE_LENGTH*indexOUT1,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,PIPE_WIDTH,PIPE_LENGTH,pen,brush);
+    Pipe* output1_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT1+PIPE_LENGTH*indexOUT1,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,PIPE_WIDTH,PIPE_LENGTH,Pipe::PIPE_OUTPUT);
+    addItem(output1_pipe);
+    items.insert(id,output1_pipe);
+    id++;
+
     int indexOUT2 = entity->getOutput2Pos();
-    addRect(baseX+PIPE_WIDTH*indexOUT2+PIPE_LENGTH*indexOUT2,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,PIPE_WIDTH,PIPE_LENGTH,pen,brush);
+    Pipe* output2_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT2+PIPE_LENGTH*indexOUT2,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,PIPE_WIDTH,PIPE_LENGTH,Pipe::PIPE_OUTPUT);
+    addItem(output2_pipe);
+    items.insert(id,output2_pipe);
+    id++;
+
     int indexOUT3 = entity->getOutput3Pos();
-    addRect(baseX+PIPE_WIDTH*indexOUT3+PIPE_LENGTH*indexOUT3,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,PIPE_WIDTH,PIPE_LENGTH,pen,brush);
+    Pipe* output3_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT3+PIPE_LENGTH*indexOUT3,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,PIPE_WIDTH,PIPE_LENGTH,Pipe::PIPE_OUTPUT);
+    addItem(output3_pipe);
+    items.insert(id,output3_pipe);
+    id++;
+
+#ifdef QT_DEBUG
+    qDebug()<<"total pipes:" <<id;
+#endif
+
+    Q_ASSERT(id == 2*size*size-2*size+5);
+    Q_ASSERT(items.size() == 2*size*size-2*size+5);
 }
 
 void PipeScene::restore(){
+    this->items.clear();
     this->reset(entity);
 }

@@ -1,13 +1,16 @@
 #include "editorview.h"
 #include "editorwidget.h"
-#include <QDebug>
 #include <QWheelEvent>
+
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
 
 EditorView::EditorView(QWidget *parent)
     :QGraphicsView(parent)
 {
     //some settings
-    setDragMode(ScrollHandDrag);
+    setDragMode(RubberBandDrag);
     setRenderHint(QPainter::Antialiasing,true);
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 }

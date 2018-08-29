@@ -2,7 +2,7 @@
 #define CONFIGURATIONENTITY_H
 
 #define PIPE_SIZE_MIN 5
-#define PIPE_SIZE_MAX 20
+#define PIPE_SIZE_MAX 100
 
 class ConfigurationEntity
 {

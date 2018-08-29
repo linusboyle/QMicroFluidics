@@ -1,5 +1,6 @@
 #include "editorwidget.h"
 #include "editorview.h"
+#include <qmath.h>
 #include <QSlider>
 #include <QToolButton>
 #include <QStyle>
@@ -7,8 +8,11 @@
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QScrollBar>
-#include <qmath.h>
+#include <QKeyEvent>
+
+#ifdef QT_DEBUG
 #include <QDebug>
+#endif
 
 EditorWidget::EditorWidget(QWidget *parent)
     :QFrame(parent)
@@ -140,4 +144,21 @@ void EditorWidget::rotateRight()
 
 EditorView* EditorWidget::getView() const {
     return view;
+}
+
+void EditorWidget::keyPressEvent(QKeyEvent *event)
+{
+    //ctrl-- and ctrl-+
+    if(event->modifiers() & Qt::ControlModifier) {
+        switch (event->key()) {
+        case Qt::Key_Minus:
+            zoomOut(6);
+            return;
+        case Qt::Key_Equal:
+            zoomIn(6);
+            return;
+        default:
+            return;
+        }
+    }
 }

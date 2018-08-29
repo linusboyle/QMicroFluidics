@@ -48,7 +48,7 @@ void NewDesignDialog::initUI()
     output3Edit->setValidator(validator);
 
     //labels on side of lineedit
-    QLabel* sizeHint = new QLabel(tr("size:"),this);
+    QLabel* sizeHint = new QLabel(tr("Size:"),this);
     QLabel* input1Hint = new QLabel(tr("Input1 Pipe:"),this);
     QLabel* input2Hint = new QLabel(tr("Input2 Pipe:"),this);
     QLabel* output1Hint = new QLabel(tr("Output1 Pipe:"),this);

@@ -32,7 +32,8 @@ SOURCES += \
     configurationentity.cpp \
     pipescene.cpp \
     editorview.cpp \
-    editorwidget.cpp
+    editorwidget.cpp \
+    pipe.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,7 +41,8 @@ HEADERS += \
     configurationentity.h \
     pipescene.h \
     editorview.h \
-    editorwidget.h
+    editorwidget.h \
+    pipe.h
 
 RESOURCES += \
     res.qrc

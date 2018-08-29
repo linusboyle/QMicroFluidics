@@ -15,6 +15,9 @@ public:
 
     EditorView* getView() const;
 
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
+
 public slots:
     void zoomIn(int scale = 1);
     void zoomOut(int scale = 1);

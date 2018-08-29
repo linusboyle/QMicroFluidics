@@ -5,9 +5,12 @@
 #include "editorwidget.h"
 #include "editorview.h"
 #include <QApplication>
-#include <QDebug>
 #include <QMenuBar>
 #include <QMessageBox>
+
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
