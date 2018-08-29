@@ -19,7 +19,7 @@ public slots:
     void createNewDesign();
 
 private:
-    void initMenu();
+    void initUI();
 
     PipeScene* scene;
     EditorWidget* editor;

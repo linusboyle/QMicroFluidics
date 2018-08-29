@@ -12,6 +12,7 @@ NewDesignDialog::NewDesignDialog(QWidget *parent):
     QDialog(parent),entity(nullptr)
 {
     initUI();
+    setWindowTitle(tr("New Design Setting"));
 }
 
 NewDesignDialog::~NewDesignDialog() {

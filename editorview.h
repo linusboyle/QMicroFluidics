@@ -10,8 +10,9 @@ class EditorView:public QGraphicsView
 public:
     EditorView(EditorWidget* parent = nullptr);
 
-protected:
-    void wheelEvent(QWheelEvent* event) override;
+    //disabled because of sigv fault
+//protected:
+//    void wheelEvent(QWheelEvent* event) override;
 
 private:
     EditorWidget* _parent;

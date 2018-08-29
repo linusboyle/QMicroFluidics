@@ -6,6 +6,7 @@
 #include "editorview.h"
 #include <QApplication>
 #include <QMenuBar>
+#include <QToolBar>
 #include <QMessageBox>
 
 #ifdef QT_DEBUG
@@ -15,7 +16,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    initMenu();
+    initUI();
 
     scene = new PipeScene(this);
     dialog = new NewDesignDialog(this);
@@ -26,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(editor);
 
     setMinimumSize(600,600);
+    setWindowTitle(tr("QMicroFluidics"));
 }
 
 MainWindow::~MainWindow()
@@ -33,7 +35,7 @@ MainWindow::~MainWindow()
 
 }
 
-void MainWindow::initMenu(){
+void MainWindow::initUI(){
 
     //menus
     QMenu* filemenu = menuBar()->addMenu(tr("&File"));
@@ -41,20 +43,22 @@ void MainWindow::initMenu(){
     QMenu* canvasmenu = menuBar()->addMenu(tr("&Canvas"));
     QMenu* viewmenu = menuBar()->addMenu(tr("&View"));
 
+
     //actions
-    QAction* quitaction = filemenu->addAction(tr("&Quit"));
+    QAction* quitaction = filemenu->addAction(QIcon::fromTheme("application-exit",QIcon(":/icons/exit.svg")),tr("&Quit"));
 
-    QAction* newaction = canvasmenu->addAction(tr("&New"));
-    QAction* clearaction = canvasmenu->addAction(tr("&Clear"));
-    QAction* restoreaction = canvasmenu->addAction(tr("&Restore"));
+    QAction* newaction = canvasmenu->addAction(QIcon::fromTheme("filenew"),tr("&New"));
+    QAction* clearaction = canvasmenu->addAction(QIcon::fromTheme("edit-clear-all"),tr("&Clear"));
+    QAction* restoreaction = canvasmenu->addAction(QIcon::fromTheme("view-restore"),tr("&Restore"));
 
+    //these five have already been on the central widget and need no icon
     QAction* zoominaction = viewmenu->addAction(tr("Zoom&In"));
     QAction* zoomoutaction = viewmenu->addAction(tr("Zoom&Out"));
     QAction* rotateleftaction = viewmenu->addAction(tr("Rotate&Left"));
     QAction* rotaterightaction = viewmenu->addAction(tr("Rotate&Right"));
     QAction* resetaction = viewmenu->addAction(tr("R&eset"));
 
-    QAction* deleteaction = editmenu->addAction(tr("&Delete Selected"));
+    QAction* deleteaction = editmenu->addAction(QIcon::fromTheme("edit-delete"),tr("&Delete Selected"));
 
     connect(newaction,&QAction::triggered,this,&MainWindow::createNewDesign);
     connect(clearaction,&QAction::triggered,this,&MainWindow::clearScene);
@@ -80,8 +84,14 @@ void MainWindow::initMenu(){
         this->scene->deleteSelectionItems();
     });
 
-    //dont know why this leads to SIGV
-    //connect(clearaction,&QAction::triggered,scene,&QGraphicsScene::clear);
+    //toolbar
+    QToolBar* toolbar = new QToolBar(tr("File"));
+    addToolBar(Qt::TopToolBarArea,toolbar);
+    toolbar->addAction(quitaction);
+    toolbar->addAction(newaction);
+    toolbar->addAction(clearaction);
+    toolbar->addAction(restoreaction);
+    toolbar->addAction(deleteaction);
 }
 
 void MainWindow::createNewDesign(){

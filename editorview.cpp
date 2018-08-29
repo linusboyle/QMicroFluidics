@@ -16,14 +16,14 @@ EditorView::EditorView(EditorWidget *parent)
 
 }
 
-void EditorView::wheelEvent(QWheelEvent *event) {
-    if (event->modifiers() & Qt::ControlModifier) {
-        if (event->delta() > 0) {
-            _parent->zoomIn(6);
-        } else {
-            _parent->zoomOut(6);
-        }
-    } else {
-        QGraphicsView::wheelEvent(event);
-    }
-}
+//void EditorView::wheelEvent(QWheelEvent *event) {
+//    if (event->modifiers() & Qt::ControlModifier) {
+//        if (event->delta() > 0) {
+//            _parent->zoomIn(6);
+//        } else {
+//            _parent->zoomOut(6);
+//        }
+//    } else {
+//        QGraphicsView::wheelEvent(event);
+//    }
+//}
