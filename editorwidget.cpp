@@ -69,7 +69,6 @@ EditorWidget::EditorWidget(QWidget *parent)
 
     resetButton = new QToolButton;
     resetButton->setText(tr("0"));
-    resetButton->setEnabled(false);
 
     QGridLayout *topLayout = new QGridLayout;
     topLayout->addWidget(view, 0, 0);
@@ -95,6 +94,7 @@ EditorWidget::EditorWidget(QWidget *parent)
     connect(view->verticalScrollBar(),&QScrollBar::valueChanged,this,&EditorWidget::enableResetButton);
 
     setUpMatrix();
+    resetButton->setEnabled(false);
 }
 
 void EditorWidget::enableResetButton(){
@@ -102,6 +102,10 @@ void EditorWidget::enableResetButton(){
 }
 
 void EditorWidget::resetView() {
+    if(!resetButton->isEnabled()){
+        return;
+    }
+
     zoomSlider->setValue(250);
     rotateSlider->setValue(0);
     setUpMatrix();

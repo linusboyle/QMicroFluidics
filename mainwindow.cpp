@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setCentralWidget(editor);
 
-    setMinimumSize(500,500);
+    setMinimumSize(600,600);
 }
 
 MainWindow::~MainWindow()
