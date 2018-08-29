@@ -22,7 +22,7 @@ void EditorView::wheelEvent(QWheelEvent *event) {
     if(!_parent){
         Q_UNREACHABLE();
 
-        qDebug()<<"the parent is not a EditorWidget,it's strange!";
+        qDebug()<<"the parent is not an EditorWidget,it's strange!";
         return;
     }
 #endif

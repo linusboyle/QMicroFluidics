@@ -22,12 +22,12 @@ public slots:
     void zoomIn(int scale = 1);
     void zoomOut(int scale = 1);
     void resetView();
+    void rotateLeft();
+    void rotateRight();
 
 private slots:
     void enableResetButton();
     void setUpMatrix();
-    void rotateLeft();
-    void rotateRight();
 
 private:
     EditorView* view;

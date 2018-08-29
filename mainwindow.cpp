@@ -34,24 +34,37 @@ MainWindow::~MainWindow()
 
 void MainWindow::initMenu(){
     QMenu* filemenu = menuBar()->addMenu(tr("&File"));
-
     QMenu* canvasmenu = menuBar()->addMenu(tr("&Canvas"));
+    QMenu* viewmenu = menuBar()->addMenu(tr("&View"));
 
     QAction* quitaction = filemenu->addAction(tr("&Quit"));
-
     QAction* newaction = canvasmenu->addAction(tr("&New"));
     QAction* clearaction = canvasmenu->addAction(tr("&Clear"));
     QAction* restoreaction = canvasmenu->addAction(tr("&Restore"));
+    QAction* zoominaction = viewmenu->addAction(tr("Zoom&In"));
+    QAction* zoomoutaction = viewmenu->addAction(tr("Zoom&Out"));
+    QAction* rotateleftaction = viewmenu->addAction(tr("Rotate&Left"));
+    QAction* rotaterightaction = viewmenu->addAction(tr("Rotate&Right"));
 
     connect(newaction,&QAction::triggered,this,&MainWindow::createNewDesign);
     connect(clearaction,&QAction::triggered,this,&MainWindow::clearScene);
     connect(restoreaction,&QAction::triggered,this,&MainWindow::restoreScene);
     connect(quitaction,&QAction::triggered,qApp,&QApplication::quit);
+    connect(zoominaction,&QAction::triggered,[this](){
+        this->editor->zoomIn();
+    });
+    connect(zoomoutaction,&QAction::triggered,[this](){
+        this->editor->zoomOut();
+    });
+    connect(rotateleftaction,&QAction::triggered,[this](){
+        this->editor->rotateLeft();
+    });
+    connect(rotaterightaction,&QAction::triggered,[this](){
+        this->editor->rotateRight();
+    });
 
     //dont know why this leads to SIGV
     //connect(clearaction,&QAction::triggered,scene,&QGraphicsScene::clear);
-
-    //TODO : more entries
 }
 
 void MainWindow::createNewDesign(){
