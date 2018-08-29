@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     dialog = new NewDesignDialog(this);
     editor = new EditorWidget(this);
     editor->getView()->setScene(scene);
+    connect(editor,&EditorWidget::requestDeletion,scene,&PipeScene::deleteSelectionItems);
 
     setCentralWidget(editor);
 
@@ -33,23 +34,33 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::initMenu(){
+
+    //menus
     QMenu* filemenu = menuBar()->addMenu(tr("&File"));
+    QMenu* editmenu = menuBar()->addMenu(tr("&Edit"));
     QMenu* canvasmenu = menuBar()->addMenu(tr("&Canvas"));
     QMenu* viewmenu = menuBar()->addMenu(tr("&View"));
 
+    //actions
     QAction* quitaction = filemenu->addAction(tr("&Quit"));
+
     QAction* newaction = canvasmenu->addAction(tr("&New"));
     QAction* clearaction = canvasmenu->addAction(tr("&Clear"));
     QAction* restoreaction = canvasmenu->addAction(tr("&Restore"));
+
     QAction* zoominaction = viewmenu->addAction(tr("Zoom&In"));
     QAction* zoomoutaction = viewmenu->addAction(tr("Zoom&Out"));
     QAction* rotateleftaction = viewmenu->addAction(tr("Rotate&Left"));
     QAction* rotaterightaction = viewmenu->addAction(tr("Rotate&Right"));
+    QAction* resetaction = viewmenu->addAction(tr("R&eset"));
+
+    QAction* deleteaction = editmenu->addAction(tr("&Delete Selected"));
 
     connect(newaction,&QAction::triggered,this,&MainWindow::createNewDesign);
     connect(clearaction,&QAction::triggered,this,&MainWindow::clearScene);
     connect(restoreaction,&QAction::triggered,this,&MainWindow::restoreScene);
     connect(quitaction,&QAction::triggered,qApp,&QApplication::quit);
+
     connect(zoominaction,&QAction::triggered,[this](){
         this->editor->zoomIn();
     });
@@ -61,6 +72,12 @@ void MainWindow::initMenu(){
     });
     connect(rotaterightaction,&QAction::triggered,[this](){
         this->editor->rotateRight();
+    });
+    connect(resetaction,&QAction::triggered,[this](){
+        this->editor->resetView();
+    });
+    connect(deleteaction,&QAction::triggered,[this](){
+        this->scene->deleteSelectionItems();
     });
 
     //dont know why this leads to SIGV

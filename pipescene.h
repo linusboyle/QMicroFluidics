@@ -13,6 +13,9 @@ public:
     void restore();
     void reset(ConfigurationEntity* _entity);
 
+public slots:
+    void deleteSelectionItems();
+
 private:
     ConfigurationEntity* entity;
     QHash<int,QGraphicsItem*> items;

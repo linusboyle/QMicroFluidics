@@ -161,4 +161,12 @@ void EditorWidget::keyPressEvent(QKeyEvent *event)
             return;
         }
     }
+    switch (event->key()) {
+        case Qt::Key_Delete:
+            emit requestDeletion();
+            break;
+        default:
+            break;
+    }
 }
+

@@ -15,6 +15,9 @@ public:
 
     EditorView* getView() const;
 
+signals:
+    void requestDeletion();
+
 protected:
     void keyPressEvent(QKeyEvent* event) override;
 
@@ -38,6 +41,7 @@ private:
     QToolButton* resetButton;
     QSlider* zoomSlider;
     QSlider* rotateSlider;
+
 };
 
 #endif // EDITORWIDGET_H

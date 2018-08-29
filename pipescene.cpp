@@ -91,3 +91,10 @@ void PipeScene::restore(){
     this->items.clear();
     this->reset(entity);
 }
+
+void PipeScene::deleteSelectionItems() {
+    QList<QGraphicsItem*> selecteditems = selectedItems();
+    foreach (QGraphicsItem* item, selecteditems) {
+        item->setVisible(false);
+    }
+}

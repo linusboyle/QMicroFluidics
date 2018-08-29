@@ -9,9 +9,9 @@
 Pipe::Pipe(int id, int x, int y, int width, int height, Type type, QGraphicsItem *parent)
     :QGraphicsItem(parent),m_id(id),baseX(x),baseY(y),m_width(width),m_height(height),m_type(type)
 {
-#ifdef QT_DEBUG
-    qDebug()<< "id:"<<m_id<<" initialized";
-#endif
+//#ifdef QT_DEBUG
+//    qDebug()<< "id:"<<m_id<<" initialized";
+//#endif
 
     if(m_type == PIPE_NORM)
         setFlags(ItemIsSelectable);

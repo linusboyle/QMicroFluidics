@@ -3,12 +3,18 @@
 
 #include <QGraphicsView>
 
+class EditorWidget;
+
 class EditorView:public QGraphicsView
 {
 public:
-    EditorView(QWidget* parent = nullptr);
+    EditorView(EditorWidget* parent = nullptr);
+
 protected:
     void wheelEvent(QWheelEvent* event) override;
+
+private:
+    EditorWidget* _parent;
 };
 
 #endif // EDITORVIEW_H
