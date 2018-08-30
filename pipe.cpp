@@ -36,12 +36,26 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
                 painter->setBrush(Qt::black);
             else
                 painter->setBrush(Qt::darkGray);
+            painter->drawRect(baseX,baseY,m_width,m_height);
             break;
         case PIPE_INPUT:
-            painter->setBrush(Qt::blue);
+            painter->setBrush(Qt::darkBlue);
+            painter->drawRect(baseX,baseY,m_width,m_height);
+
+            painter->setPen(Qt::white);
+            painter->setBrush(Qt::NoBrush);
+            painter->drawText(boundingRect(),Qt::AlignCenter,QString("I\n"
+                                                                     "N"));
             break;
         case PIPE_OUTPUT:
-            painter->setBrush(Qt::red);
+            painter->setBrush(Qt::darkCyan);
+            painter->drawRect(baseX,baseY,m_width,m_height);
+
+            painter->setPen(Qt::white);
+            painter->setBrush(Qt::NoBrush);
+            painter->drawText(boundingRect(),Qt::AlignCenter,QString("O\n"
+                                                                     "U\n"
+                                                                     "T"));
             break;
         default:
             Q_UNREACHABLE();
@@ -51,12 +65,7 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
             break;
     }
 
-    painter->drawRect(baseX,baseY,m_width,m_height);
 
-//for debug
-//    painter->setPen(Qt::green);
-//    painter->setBrush(Qt::NoBrush);
-//    painter->drawText(boundingRect(),Qt::AlignCenter,QString::number(m_id));
 }
 
 

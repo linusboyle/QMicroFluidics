@@ -22,6 +22,8 @@ PipeScene::~PipeScene(){
     if(contextmenu){
         contextmenu->deleteLater();
     }
+    if(entity)
+        delete entity;
 }
 
 void PipeScene::reset(ConfigurationEntity *_entity){
@@ -29,6 +31,7 @@ void PipeScene::reset(ConfigurationEntity *_entity){
         if (entity) {
             delete entity;
         }
+        //deep copy
         entity = new ConfigurationEntity(*_entity);
     }
 
