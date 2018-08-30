@@ -2,18 +2,26 @@
 #include "configurationentity.h"
 #include "pipe.h"
 #include "microfluidicsserver.h"
+#include <QMenu>
+#include <QGraphicsSceneContextMenuEvent>
 
 #ifdef QT_DEBUG
 #include <QDebug>
 #endif
 
-#define PIPE_LENGTH 50
+#define PIPE_LENGTH 80
 #define PIPE_WIDTH 10
 
 PipeScene::PipeScene(QObject *parent):
     QGraphicsScene(parent),entity(nullptr)
 {
+    initContextMenu();
+}
 
+PipeScene::~PipeScene(){
+    if(contextmenu){
+        contextmenu->deleteLater();
+    }
 }
 
 void PipeScene::reset(ConfigurationEntity *_entity){
@@ -106,6 +114,13 @@ void PipeScene::deleteSelectionItems() {
         emit needCalc(getStatusMatrix());
 }
 
+void PipeScene::initContextMenu()
+{
+    contextmenu = new QMenu();
+    QAction* deleteaction = contextmenu->addAction(QIcon::fromTheme("edit-delete"),tr("&Delete Selected"));
+    connect(deleteaction,&QAction::triggered,this,&PipeScene::deleteSelectionItems);
+}
+
 QVector<qreal> PipeScene::getStatusMatrix() const {
     QVector<qreal> retval;
 
@@ -113,9 +128,12 @@ QVector<qreal> PipeScene::getStatusMatrix() const {
         retval.push_back(items.value(i)->isVisible() ? PIPE_LENGTH:0);
     }
 
-//#ifdef QT_DEBUG
-//    qDebug()<<retval;
-//#endif
-
     return retval;
+}
+
+void PipeScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+    if(this->hasFocus()){
+        contextmenu->exec(event->screenPos());
+    }
 }

@@ -295,13 +295,10 @@ void initrect(){
 	// cout<<rect.size()<<endl;
 }
 
-//函数功能：确定a和b之前的最小数。
-//参数含义：。
-int min (int a, int b)  {
-	if (a>b)
-		return b;
-	else
-		return a;
+
+template<class T>
+inline T&& min(T&& a , T&& b) noexcept {
+    return a < b ? a : b;
 }
 
 //函数功能：计算a和b的最大公约数。

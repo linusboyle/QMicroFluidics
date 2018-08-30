@@ -13,8 +13,10 @@ Pipe::Pipe(int id, int x, int y, int width, int height, Type type, QGraphicsItem
 //    qDebug()<< "id:"<<m_id<<" initialized";
 //#endif
 
-    if(m_type == PIPE_NORM)
+    if(m_type == PIPE_NORM){
         setFlags(ItemIsSelectable);
+        setAcceptHoverEvents(true);
+    }
 }
 
 QRectF Pipe::boundingRect() const {
@@ -28,7 +30,9 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->setPen(Qt::NoPen);
     switch (m_type) {
         case PIPE_NORM:
-            if(option->state & QStyle::State_Selected)
+            if(option->state & QStyle::State_MouseOver)
+                painter->setBrush(Qt::darkMagenta);
+            else if(option->state & QStyle::State_Selected)
                 painter->setBrush(Qt::black);
             else
                 painter->setBrush(Qt::darkGray);
