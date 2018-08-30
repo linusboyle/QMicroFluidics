@@ -26,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent)
     editor->getView()->setScene(scene);
     connect(editor,&EditorWidget::requestDeletion,scene,&PipeScene::deleteSelectionItems);
     connect(scene,&PipeScene::needCalc,MicroFluidicsServer::instance(),&MicroFluidicsServer::queryVelocity,Qt::QueuedConnection);
+    connect(scene,&PipeScene::contextDemandClear,this,&MainWindow::clearScene);
+
     connect(MicroFluidicsServer::instance(),&MicroFluidicsServer::velocityChanged,editor->getIndicator(),&VelocityIndicator::onVelocityChanged);
 
     setCentralWidget(editor);

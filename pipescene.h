@@ -26,6 +26,7 @@ public slots:
 
 signals:
     void needCalc(const QVector<qreal>&);
+    void contextDemandClear();
 
 private:
     ConfigurationEntity* entity;

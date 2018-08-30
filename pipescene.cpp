@@ -121,8 +121,8 @@ void PipeScene::deleteSelectionItems() {
 void PipeScene::initContextMenu()
 {
     contextmenu = new QMenu();
-    QAction* deleteaction = contextmenu->addAction(QIcon::fromTheme("edit-delete"),tr("&Delete Selected"));
-    connect(deleteaction,&QAction::triggered,this,&PipeScene::deleteSelectionItems);
+    QAction* clearaction = contextmenu->addAction(QIcon::fromTheme("edit-clear-all"),tr("&Clear"));
+    connect(clearaction,&QAction::triggered,this,&PipeScene::contextDemandClear);
 }
 
 QVector<qreal> PipeScene::getStatusMatrix() const {

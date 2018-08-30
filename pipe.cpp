@@ -64,8 +64,6 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 #endif
             break;
     }
-
-
 }
 
 
