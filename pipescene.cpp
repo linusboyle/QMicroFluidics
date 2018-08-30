@@ -46,7 +46,8 @@ void PipeScene::reset(ConfigurationEntity *_entity){
     //columns
     for(int i=0;i<size;++i) {
         for(int j=0;j<size-1;++j) {
-            Pipe* m_pipe = new Pipe(id,baseX+PIPE_WIDTH*i+PIPE_LENGTH*i,baseY+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,PIPE_WIDTH,PIPE_LENGTH);
+            Pipe* m_pipe = new Pipe(id,baseX+PIPE_WIDTH*i+PIPE_LENGTH*i,baseY+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,
+                                    PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL);
             addItem(m_pipe);
             items.insert(id,m_pipe);
             id++;
@@ -55,7 +56,8 @@ void PipeScene::reset(ConfigurationEntity *_entity){
 
     for(int j=0;j<size-1;++j) {//each row
         for(int i=0;i<size;++i) { //rows
-            Pipe* m_pipe = new Pipe(id,baseX+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,baseY+PIPE_WIDTH*i+PIPE_LENGTH*i,PIPE_LENGTH,PIPE_WIDTH);
+            Pipe* m_pipe = new Pipe(id,baseX+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,baseY+PIPE_WIDTH*i+PIPE_LENGTH*i,
+                                    PIPE_LENGTH,PIPE_WIDTH,Pipe::HORIZONTAL);
             addItem(m_pipe);
             items.insert(id,m_pipe);
             id++;
@@ -63,31 +65,36 @@ void PipeScene::reset(ConfigurationEntity *_entity){
     }
 
     int indexIN1 = entity->getInput1Pos();
-    Pipe* input1_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexIN1+PIPE_LENGTH*indexIN1,baseY-PIPE_LENGTH,PIPE_WIDTH,PIPE_LENGTH,Pipe::PIPE_INPUT);
+    Pipe* input1_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexIN1+PIPE_LENGTH*indexIN1,baseY-PIPE_LENGTH,
+                                 PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_INPUT);
     addItem(input1_pipe);
     items.insert(id,input1_pipe);
     id++;
 
     int indexIN2 = entity->getInput2Pos();
-    Pipe* input2_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexIN2+PIPE_LENGTH*indexIN2,baseY-PIPE_LENGTH,PIPE_WIDTH,PIPE_LENGTH,Pipe::PIPE_INPUT);
+    Pipe* input2_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexIN2+PIPE_LENGTH*indexIN2,baseY-PIPE_LENGTH,
+                                 PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_INPUT);
     addItem(input2_pipe);
     items.insert(id,input2_pipe);
     id++;
 
     int indexOUT1 = entity->getOutput1Pos();
-    Pipe* output1_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT1+PIPE_LENGTH*indexOUT1,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,PIPE_WIDTH,PIPE_LENGTH,Pipe::PIPE_OUTPUT);
+    Pipe* output1_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT1+PIPE_LENGTH*indexOUT1,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,
+                                  PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_OUTPUT);
     addItem(output1_pipe);
     items.insert(id,output1_pipe);
     id++;
 
     int indexOUT2 = entity->getOutput2Pos();
-    Pipe* output2_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT2+PIPE_LENGTH*indexOUT2,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,PIPE_WIDTH,PIPE_LENGTH,Pipe::PIPE_OUTPUT);
+    Pipe* output2_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT2+PIPE_LENGTH*indexOUT2,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,
+                                  PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_OUTPUT);
     addItem(output2_pipe);
     items.insert(id,output2_pipe);
     id++;
 
     int indexOUT3 = entity->getOutput3Pos();
-    Pipe* output3_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT3+PIPE_LENGTH*indexOUT3,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,PIPE_WIDTH,PIPE_LENGTH,Pipe::PIPE_OUTPUT);
+    Pipe* output3_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT3+PIPE_LENGTH*indexOUT3,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,
+                                  PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_OUTPUT);
     addItem(output3_pipe);
     items.insert(id,output3_pipe);
     id++;

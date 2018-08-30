@@ -12,18 +12,28 @@ public:
         PIPE_OUTPUT = 4,
     };
 
-    Pipe(int id,int x,int y,int width,int height,Type type = PIPE_NORM,QGraphicsItem* parent = nullptr);
+    enum Orientation {
+        HORIZONTAL = 1,
+        VERTICAL = 2,
+    };
+
+    Pipe(int id,qreal x,qreal y,qreal width,qreal height,Orientation orientation
+            ,Type type = PIPE_NORM,QGraphicsItem* parent = nullptr);
     QPainterPath shape() const override;
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
+public slots:
+    void resetWidth(qreal width);
+
 private:
     int m_id;
-    int baseX;
-    int baseY;
-    int m_width;
-    int m_height;
+    qreal baseX;
+    qreal baseY;
+    qreal m_width;
+    qreal m_height;
 
+    Orientation m_orientation;
     Type m_type;
 };
 

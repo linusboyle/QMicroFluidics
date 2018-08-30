@@ -29,6 +29,8 @@ VelocityIndicator::VelocityIndicator(QWidget *parent)
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    verticalHeader()->setVisible(false);
+
     updateSize();
 }
 
@@ -66,5 +68,8 @@ void VelocityIndicator::clearAllText() {
 
 void VelocityIndicator::updateSize(){
     resizeColumnsToContents();
-    setFixedSize(horizontalHeader()->length()+verticalHeader()->width(),verticalHeader()->length()+horizontalHeader()->height());
+    resizeRowsToContents();
+    setFixedSize(horizontalHeader()->length(),
+                 verticalHeader()->length()+horizontalHeader()->height());
+    update();
 }

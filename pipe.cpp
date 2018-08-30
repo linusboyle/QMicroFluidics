@@ -6,13 +6,9 @@
 #include <QDebug>
 #endif
 
-Pipe::Pipe(int id, int x, int y, int width, int height, Type type, QGraphicsItem *parent)
-    :QGraphicsItem(parent),m_id(id),baseX(x),baseY(y),m_width(width),m_height(height),m_type(type)
+Pipe::Pipe(int id, qreal x, qreal y, qreal width, qreal height, Orientation orientation, Type type, QGraphicsItem *parent)
+    :QGraphicsItem(parent),m_id(id),baseX(x),baseY(y),m_width(width),m_height(height),m_orientation(orientation),m_type(type)
 {
-//#ifdef QT_DEBUG
-//    qDebug()<< "id:"<<m_id<<" initialized";
-//#endif
-
     if(m_type == PIPE_NORM){
         setFlags(ItemIsSelectable);
         setAcceptHoverEvents(true);
@@ -36,11 +32,11 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
                 painter->setBrush(Qt::black);
             else
                 painter->setBrush(Qt::darkGray);
-            painter->drawRect(baseX,baseY,m_width,m_height);
+            painter->drawRect(QRectF(baseX,baseY,m_width,m_height));
             break;
         case PIPE_INPUT:
             painter->setBrush(Qt::darkBlue);
-            painter->drawRect(baseX,baseY,m_width,m_height);
+            painter->drawRect(QRectF(baseX,baseY,m_width,m_height));
 
             painter->setPen(Qt::white);
             painter->setBrush(Qt::NoBrush);
@@ -49,7 +45,7 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
             break;
         case PIPE_OUTPUT:
             painter->setBrush(Qt::darkCyan);
-            painter->drawRect(baseX,baseY,m_width,m_height);
+            painter->drawRect(QRectF(baseX,baseY,m_width,m_height));
 
             painter->setPen(Qt::white);
             painter->setBrush(Qt::NoBrush);
@@ -72,4 +68,18 @@ QPainterPath Pipe::shape() const {
     path.addRect(boundingRect());
 
     return path;
+}
+
+void Pipe::resetWidth(qreal width) {
+    switch (m_orientation) {
+    case HORIZONTAL:
+        baseY -= (width-m_height)/2;
+        m_height = width;
+        break;
+    case VERTICAL:
+        baseX -= (width-m_width)/2;
+        m_width = width;
+    default:
+        break;
+    }
 }
