@@ -5,9 +5,11 @@
 
 class ConfigurationEntity;
 class QMenu;
+class EditorView;
 
-#define PIPE_LENGTH 80
-#define PIPE_WIDTH 10
+#define PIPE_LENGTH qreal(80)
+#define PIPE_WIDTH qreal(10)
+#define PIPE_REAL_WIDTH qreal(200)
 
 class PipeScene : public QGraphicsScene
 {
@@ -17,6 +19,7 @@ public:
     ~PipeScene();
 
     void reset(ConfigurationEntity* _entity);
+    void setView(EditorView* _view);
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
@@ -26,7 +29,7 @@ public slots:
     void restore();
 
 private slots:
-    void onPipeRequsetResetWidth(qreal id,qreal newWidth);
+    void onPipeRequsetResetWidth(qreal id);
 
 signals:
     void needCalc(const QVector<qreal>&);
@@ -37,6 +40,7 @@ private:
     ConfigurationEntity* entity;
     QMenu* contextmenu;
     QHash<int,QGraphicsItem*> items;
+    EditorView* view;
 
     QVector<qreal> getStatusMatrix() const;
     void initContextMenu();

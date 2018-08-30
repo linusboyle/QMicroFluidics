@@ -20,7 +20,10 @@ MainWindow::MainWindow(QWidget *parent)
     scene = new PipeScene(this);
     dialog = new NewDesignDialog(this);
     editor = new EditorWidget(this);
+
     editor->getView()->setScene(scene);
+    scene->setView(editor->getView());
+
     connect(editor,&EditorWidget::requestDeletion,scene,&PipeScene::deleteSelectionItems);
     connect(scene,&PipeScene::needCalc,MicroFluidicsServer::instance(),&MicroFluidicsServer::queryVelocity,Qt::QueuedConnection);
     connect(scene,&PipeScene::contextDemandClear,this,&MainWindow::clearScene);
@@ -143,15 +146,10 @@ void MainWindow::popupWarning(){
                             "2.input and output pipe index must not be identical and "
                             "must be between 0 and size-1\n"
                             "3.the distance between two adjacent pipes must be greater "
-                            "than %3").arg(PIPE_SIZE_MIN).arg(PIPE_SIZE_MAX).arg(PIPE_WIDTH));
+                            "than %3").arg(PIPE_SIZE_MIN).arg(PIPE_SIZE_MAX).arg(PIPE_REAL_WIDTH));
 }
 
 void MainWindow::initGeometry(){
-//    QDesktopWidget* desktop = qApp->desktop();
-//    int primaryscreen = desktop->primaryScreen();
-//    QRect rect = desktop->screenGeometry(primaryscreen);
-
-
     QScreen* primaryscreen = QGuiApplication::primaryScreen();
     QRect rect = primaryscreen->geometry();
     setGeometry(QRect((rect.width()-this->width())/2,(rect.height()-this->height())/2,this->width(),this->height()));

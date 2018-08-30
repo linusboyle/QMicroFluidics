@@ -2,7 +2,6 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QGraphicsSceneMouseEvent>
-#include <QInputDialog>
 
 #ifdef QT_DEBUG
 #include <QDebug>
@@ -104,24 +103,8 @@ void Pipe::resetWidth(qreal width) {
 void Pipe::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
     if(event->button() != Qt::LeftButton)
         QGraphicsItem::mouseDoubleClickEvent(event);
-    else{
-        bool ok;
-        double basevalue=0;
-
-        if(m_orientation == VERTICAL)
-            basevalue = this->m_width;
-        else if(m_orientation == HORIZONTAL)
-            basevalue = this->m_height;
-
-        qreal newWidth = QInputDialog::getDouble(event->widget(),
-                                                 QObject::tr("Change Width"),
-                                                 QObject::tr("Input New Width:"),
-                                                 basevalue,0,2147483647,1,
-                                                 &ok,Qt::Dialog|Qt::FramelessWindowHint);
-        if(ok){
-            emit requestWidthChange(m_id,newWidth);
-        }
-    }
+    else
+            emit requestWidthChange(m_id);
 }
 
 int Pipe::type() const{

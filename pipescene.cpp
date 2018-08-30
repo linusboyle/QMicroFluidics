@@ -4,6 +4,8 @@
 #include "microfluidicsserver.h"
 #include <QMenu>
 #include <QGraphicsSceneContextMenuEvent>
+#include <QInputDialog>
+#include <QApplication>
 
 #ifdef QT_DEBUG
 #include <QDebug>
@@ -118,55 +120,79 @@ void PipeScene::restore(){
         this->reset(entity);
 }
 
-void PipeScene::onPipeRequsetResetWidth(qreal id, qreal newWidth)
+void PipeScene::onPipeRequsetResetWidth(qreal id)
 {
     Pipe* sender = qgraphicsitem_cast<Pipe*>(items.value(id));
     QRectF boundingrect = sender->boundingRect();
-    if(sender->getOrientation() == Pipe::VERTICAL){
-        qreal newleftx = boundingrect.x()-(newWidth-boundingrect.width())/2;
-        qreal newrightx = boundingrect.x()+(newWidth+boundingrect.width())/2;
-        int leftid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::LEFT);
-        int rightid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::RIGHT);
 
-        if(leftid>=0){
-            qreal leftline = items.value(leftid)->boundingRect().right();
-            if(newleftx-leftline < PIPE_WIDTH){
-                emit requestPopUpWarningBox();
-                return;
+    /*
+     * get the new width with dialog
+     */
+
+    bool ok;
+    double basevalue=0;
+
+    if(sender->getOrientation() == Pipe::VERTICAL)
+        basevalue = boundingrect.width()/PIPE_WIDTH * PIPE_REAL_WIDTH;
+    else if(sender->getOrientation() == Pipe::HORIZONTAL)
+        basevalue = boundingrect.height()/PIPE_WIDTH * PIPE_REAL_WIDTH;
+
+    qreal newWidth = QInputDialog::getDouble(qApp->activeWindow(),
+                                             QObject::tr("Change Width"),
+                                             QObject::tr("Input New Width:"),
+                                             basevalue,0,2147483647,1,
+                                             &ok,Qt::Dialog|Qt::FramelessWindowHint);
+
+    if(ok){
+        //transform back to inner coordinate;
+        newWidth = newWidth / PIPE_REAL_WIDTH * PIPE_WIDTH;
+
+        if(sender->getOrientation() == Pipe::VERTICAL){
+            qreal newleftx = boundingrect.x()-(newWidth-boundingrect.width())/2;
+            qreal newrightx = boundingrect.x()+(newWidth+boundingrect.width())/2;
+            int leftid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::LEFT);
+            int rightid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::RIGHT);
+
+            if(leftid>=0){
+                qreal leftline = items.value(leftid)->boundingRect().right();
+                if(newleftx-leftline < PIPE_WIDTH){
+                    emit requestPopUpWarningBox();
+                    return;
+                }
+            }
+
+            if(rightid>=0){
+                qreal rightline = items.value(rightid)->boundingRect().left();
+                if(rightline-newrightx < PIPE_WIDTH){
+                    emit requestPopUpWarningBox();
+                    return;
+                }
+            }
+        } else if (sender->getOrientation() == Pipe::HORIZONTAL){
+            qreal newupy = boundingrect.y()-(newWidth-boundingrect.height())/2;
+            qreal newdowny = boundingrect.y()+(newWidth+boundingrect.height())/2;
+            int upid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::UP);
+            int downid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::DOWN);
+
+            if(upid>=0){
+                qreal upline = items.value(upid)->boundingRect().bottom();
+                if(newupy-upline < PIPE_WIDTH){
+                    emit requestPopUpWarningBox();
+                    return;
+                }
+            }
+
+            if(downid>=0){
+                qreal downline = items.value(downid)->boundingRect().top();
+                if(downline-newdowny < PIPE_WIDTH){
+                    emit requestPopUpWarningBox();
+                    return;
+                }
             }
         }
-
-        if(rightid>=0){
-            qreal rightline = items.value(rightid)->boundingRect().left();
-            if(rightline-newrightx < PIPE_WIDTH){
-                emit requestPopUpWarningBox();
-                return;
-            }
-        }
-    } else if (sender->getOrientation() == Pipe::HORIZONTAL){
-        qreal newupy = boundingrect.y()-(newWidth-boundingrect.height())/2;
-        qreal newdowny = boundingrect.y()+(newWidth+boundingrect.height())/2;
-        int upid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::UP);
-        int downid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::DOWN);
-
-        if(upid>=0){
-            qreal upline = items.value(upid)->boundingRect().bottom();
-            if(newupy-upline < PIPE_WIDTH){
-                emit requestPopUpWarningBox();
-                return;
-            }
-        }
-
-        if(downid>=0){
-            qreal downline = items.value(downid)->boundingRect().top();
-            if(downline-newdowny < PIPE_WIDTH){
-                emit requestPopUpWarningBox();
-                return;
-            }
-        }
+        //if reach here,it's legal
+        sender->resetWidth(newWidth);
     }
-    //if reach here,it's legal
-    sender->resetWidth(newWidth);
 }
 
 void PipeScene::deleteSelectionItems() {
@@ -204,4 +230,8 @@ void PipeScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     if(this->hasFocus()){
         contextmenu->exec(event->screenPos());
     }
+}
+
+void PipeScene::setView(EditorView *_view){
+    view = _view;
 }

@@ -29,11 +29,12 @@ public:
     int type() const override;
     Types getType() const;
     Orientation getOrientation() const;
+
 public slots:
     void resetWidth(qreal width);
 
 signals:
-    void requestWidthChange(qreal id,qreal newWidth);
+    void requestWidthChange(qreal id);
 
 protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
