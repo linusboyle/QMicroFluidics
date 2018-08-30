@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(editor,&EditorWidget::requestDeletion,scene,&PipeScene::deleteSelectionItems);
     connect(scene,&PipeScene::needCalc,MicroFluidicsServer::instance(),&MicroFluidicsServer::queryVelocity,Qt::QueuedConnection);
     connect(scene,&PipeScene::contextDemandClear,this,&MainWindow::clearScene);
+    connect(scene,&PipeScene::requestPopUpWarningBox,this,&MainWindow::popupWarning);
 
     connect(MicroFluidicsServer::instance(),&MicroFluidicsServer::velocityChanged,editor->getIndicator(),&VelocityIndicator::onVelocityChanged);
 
@@ -108,10 +109,7 @@ void MainWindow::createNewDesign(){
             editor->resetView();
             MicroFluidicsServer::instance()->setConfiguration(dialog->getEntity());
         } else {
-            QMessageBox::warning(this,tr("Your Configuration is Invalid!"),tr("NOTE:\n"
-                                                                              "1.size should be between %1 and %2\n"
-                                                                              "2.input and output pipe index must not be identical and "
-                                                                              "must be between 0 and SIZE\n").arg(PIPE_SIZE_MIN).arg(PIPE_SIZE_MAX));
+            this->popupWarning();
         }
     }
 }
@@ -133,4 +131,14 @@ void MainWindow::showAboutMenu()
                                                                                    "Under GNU General Public License version 3<br>"
                                                                                    "You can find the source code on github<br>"));
     aboutbox.exec();
+}
+
+void MainWindow::popupWarning(){
+    QMessageBox::warning(this,tr("Your Configuration is Invalid!"),
+                         tr("NOTE:\n"
+                            "1.size should be between %1 and %2\n"
+                            "2.input and output pipe index must not be identical and "
+                            "must be between 0 and size-1\n"
+                            "3.the distance between two adjacent pipes must be greater "
+                            "than %3").arg(PIPE_SIZE_MIN).arg(PIPE_SIZE_MAX).arg(PIPE_WIDTH));
 }

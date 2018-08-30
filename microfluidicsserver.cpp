@@ -12,17 +12,56 @@ std::tuple<double,double,double> caluconspeed(int num, const QVector<double>&len
 
 void MicroFluidicsServer::queryVelocity(const QVector<qreal> &design)
 {
-    Q_ASSERT(design.size() == 2*size*size-2*size+5);
+    Q_ASSERT(design.size() == edgeNumber);
     auto retval = caluconspeed(size,design,input1pos,input2pos,output1pos,output2pos,output3pos);
 
     emit velocityChanged(std::get<0>(retval),std::get<1>(retval),std::get<2>(retval));
 }
 
+int MicroFluidicsServer::queryNearItemsIndex(int baseindex, Direction direction) {
+    Q_ASSERT(baseindex>=0);
+
+    switch (direction) {
+    case LEFT:
+        //only for vertical items
+        Q_ASSERT(baseindex<size*size-size);
+        //the most left column
+        if(baseindex<size-1)
+            return -1;
+        else
+            return baseindex-size+1;
+        break;
+    case RIGHT:
+        Q_ASSERT(baseindex<size*size-size);
+        if(baseindex<(size-1)*(size-1))
+            return baseindex+size-1;
+        else
+            return -1;
+        break;
+    case UP:
+        Q_ASSERT(baseindex>=size*size-size);
+        if((baseindex-size*size+size) % size ==0)
+            return -1;
+        else
+            return baseindex-1;
+        break;
+    case DOWN:
+        Q_ASSERT(baseindex>=size*size-size);
+        if((baseindex-size*size+1) % size == 0)
+            return -1;
+        else
+            return baseindex+1;
+        break;
+    default:
+        Q_UNREACHABLE();
+        break;
+    }
+}
 void MicroFluidicsServer::setConfiguration(ConfigurationEntity *entity){
 
     size = entity->getSize();
-//    nodeNumber = size*size;
-//    edgeNumber = 2*size*size-2*size+5;
+    nodeNumber = size*size;
+    edgeNumber = 2*size*size-2*size+5;
     input1pos = entity->getInput1Pos();
     input2pos = entity->getInput2Pos();
     output1pos = entity->getOutput1Pos();

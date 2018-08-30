@@ -6,6 +6,9 @@
 class ConfigurationEntity;
 class QMenu;
 
+#define PIPE_LENGTH 80
+#define PIPE_WIDTH 10
+
 class PipeScene : public QGraphicsScene
 {
     Q_OBJECT
@@ -15,8 +18,6 @@ public:
 
     void reset(ConfigurationEntity* _entity);
 
-    QVector<qreal> getStatusMatrix() const;
-
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
@@ -24,15 +25,20 @@ public slots:
     void deleteSelectionItems();
     void restore();
 
+private slots:
+    void onPipeRequsetResetWidth(qreal id,qreal newWidth);
+
 signals:
     void needCalc(const QVector<qreal>&);
     void contextDemandClear();
+    void requestPopUpWarningBox();
 
 private:
     ConfigurationEntity* entity;
     QMenu* contextmenu;
     QHash<int,QGraphicsItem*> items;
 
+    QVector<qreal> getStatusMatrix() const;
     void initContextMenu();
 };
 

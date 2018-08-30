@@ -9,9 +9,6 @@
 #include <QDebug>
 #endif
 
-#define PIPE_LENGTH 80
-#define PIPE_WIDTH 10
-
 PipeScene::PipeScene(QObject *parent):
     QGraphicsScene(parent),entity(nullptr)
 {
@@ -46,21 +43,25 @@ void PipeScene::reset(ConfigurationEntity *_entity){
     //columns
     for(int i=0;i<size;++i) {
         for(int j=0;j<size-1;++j) {
-            Pipe* m_pipe = new Pipe(id,baseX+PIPE_WIDTH*i+PIPE_LENGTH*i,baseY+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,
+            Pipe* m_pipe = new Pipe(id,baseX+PIPE_WIDTH*i+PIPE_LENGTH*i,
+                                    baseY+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,
                                     PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL);
             addItem(m_pipe);
             items.insert(id,m_pipe);
             id++;
+            connect(m_pipe,&Pipe::requestWidthChange,this,&PipeScene::onPipeRequsetResetWidth);
         }
     }
 
     for(int j=0;j<size-1;++j) {//each row
         for(int i=0;i<size;++i) { //rows
-            Pipe* m_pipe = new Pipe(id,baseX+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,baseY+PIPE_WIDTH*i+PIPE_LENGTH*i,
+            Pipe* m_pipe = new Pipe(id,baseX+PIPE_WIDTH*(j+1)+PIPE_LENGTH*j,
+                                    baseY+PIPE_WIDTH*i+PIPE_LENGTH*i,
                                     PIPE_LENGTH,PIPE_WIDTH,Pipe::HORIZONTAL);
             addItem(m_pipe);
             items.insert(id,m_pipe);
             id++;
+            connect(m_pipe,&Pipe::requestWidthChange,this,&PipeScene::onPipeRequsetResetWidth);
         }
     }
 
@@ -79,21 +80,24 @@ void PipeScene::reset(ConfigurationEntity *_entity){
     id++;
 
     int indexOUT1 = entity->getOutput1Pos();
-    Pipe* output1_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT1+PIPE_LENGTH*indexOUT1,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,
+    Pipe* output1_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT1+PIPE_LENGTH*indexOUT1,
+                                  baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,
                                   PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_OUTPUT);
     addItem(output1_pipe);
     items.insert(id,output1_pipe);
     id++;
 
     int indexOUT2 = entity->getOutput2Pos();
-    Pipe* output2_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT2+PIPE_LENGTH*indexOUT2,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,
+    Pipe* output2_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT2+PIPE_LENGTH*indexOUT2,
+                                  baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,
                                   PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_OUTPUT);
     addItem(output2_pipe);
     items.insert(id,output2_pipe);
     id++;
 
     int indexOUT3 = entity->getOutput3Pos();
-    Pipe* output3_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT3+PIPE_LENGTH*indexOUT3,baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,
+    Pipe* output3_pipe = new Pipe(id,baseX+PIPE_WIDTH*indexOUT3+PIPE_LENGTH*indexOUT3,
+                                  baseY+PIPE_LENGTH*(size-1)+PIPE_WIDTH*size,
                                   PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_OUTPUT);
     addItem(output3_pipe);
     items.insert(id,output3_pipe);
@@ -112,6 +116,57 @@ void PipeScene::reset(ConfigurationEntity *_entity){
 void PipeScene::restore(){
     if(entity)
         this->reset(entity);
+}
+
+void PipeScene::onPipeRequsetResetWidth(qreal id, qreal newWidth)
+{
+    Pipe* sender = qgraphicsitem_cast<Pipe*>(items.value(id));
+    QRectF boundingrect = sender->boundingRect();
+    if(sender->getOrientation() == Pipe::VERTICAL){
+        qreal newleftx = boundingrect.x()-(newWidth-boundingrect.width())/2;
+        qreal newrightx = boundingrect.x()+(newWidth+boundingrect.width())/2;
+        int leftid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::LEFT);
+        int rightid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::RIGHT);
+
+        if(leftid>=0){
+            qreal leftline = items.value(leftid)->boundingRect().right();
+            if(newleftx-leftline < PIPE_WIDTH){
+                emit requestPopUpWarningBox();
+                return;
+            }
+        }
+
+        if(rightid>=0){
+            qreal rightline = items.value(rightid)->boundingRect().left();
+            if(rightline-newrightx < PIPE_WIDTH){
+                emit requestPopUpWarningBox();
+                return;
+            }
+        }
+    } else if (sender->getOrientation() == Pipe::HORIZONTAL){
+        qreal newupy = boundingrect.y()-(newWidth-boundingrect.height())/2;
+        qreal newdowny = boundingrect.y()+(newWidth+boundingrect.height())/2;
+        int upid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::UP);
+        int downid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::DOWN);
+
+        if(upid>=0){
+            qreal upline = items.value(upid)->boundingRect().bottom();
+            if(newupy-upline < PIPE_WIDTH){
+                emit requestPopUpWarningBox();
+                return;
+            }
+        }
+
+        if(downid>=0){
+            qreal downline = items.value(downid)->boundingRect().top();
+            if(downline-newdowny < PIPE_WIDTH){
+                emit requestPopUpWarningBox();
+                return;
+            }
+        }
+    }
+    //if reach here,it's legal
+    sender->resetWidth(newWidth);
 }
 
 void PipeScene::deleteSelectionItems() {

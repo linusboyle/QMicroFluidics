@@ -29,6 +29,7 @@ private slots:
     void clearScene();
     void restoreScene();
     void showAboutMenu();
+    void popupWarning();
 };
 
 

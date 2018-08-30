@@ -19,6 +19,14 @@ public:
         return theinstance;
     }
 
+    enum Direction {
+        LEFT = 0,
+        UP = 1,
+        RIGHT = 2,
+        DOWN = 3,
+    };
+
+    int queryNearItemsIndex(int baseindex,Direction direction);
     void setConfiguration(ConfigurationEntity* entity);
 
 public slots:
@@ -45,8 +53,8 @@ private:
     MicroFluidicsServer& operator= (const MicroFluidicsServer&) = delete;
 
     int size;
-//    int nodeNumber;
-//    int edgeNumber;
+    int nodeNumber;
+    int edgeNumber;
 
     int input1pos;
     int input2pos;
