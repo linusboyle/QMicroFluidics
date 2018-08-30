@@ -10,6 +10,7 @@
 #include <QMenuBar>
 #include <QToolBar>
 #include <QMessageBox>
+#include <QScreen>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     setMinimumSize(600,600);
     setWindowTitle(tr("QMicroFluidics"));
+
+    initGeometry();
 }
 
 MainWindow::~MainWindow()
@@ -141,4 +144,15 @@ void MainWindow::popupWarning(){
                             "must be between 0 and size-1\n"
                             "3.the distance between two adjacent pipes must be greater "
                             "than %3").arg(PIPE_SIZE_MIN).arg(PIPE_SIZE_MAX).arg(PIPE_WIDTH));
+}
+
+void MainWindow::initGeometry(){
+//    QDesktopWidget* desktop = qApp->desktop();
+//    int primaryscreen = desktop->primaryScreen();
+//    QRect rect = desktop->screenGeometry(primaryscreen);
+
+
+    QScreen* primaryscreen = QGuiApplication::primaryScreen();
+    QRect rect = primaryscreen->geometry();
+    setGeometry(QRect((rect.width()-this->width())/2,(rect.height()-this->height())/2,this->width(),this->height()));
 }

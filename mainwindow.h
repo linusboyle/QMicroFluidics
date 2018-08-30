@@ -20,6 +20,7 @@ public slots:
 
 private:
     void initUI();
+    void initGeometry();
 
     PipeScene* scene;
     EditorWidget* editor;
