@@ -93,13 +93,13 @@ void NewDesignDialog::initUI()
     //put all into groupbox
     QGroupBox* groupbox = new QGroupBox(tr("Configure New Design"),this);
     QVBoxLayout* groupLayout = new QVBoxLayout();
-    groupLayout->addItem(sizeLayout);
-    groupLayout->addItem(input1Layout);
-    groupLayout->addItem(input2Layout);
-    groupLayout->addItem(output1Layout);
-    groupLayout->addItem(output2Layout);
-    groupLayout->addItem(output3Layout);
-    groupLayout->addItem(buttonLayout);
+    groupLayout->addLayout(sizeLayout);
+    groupLayout->addLayout(input1Layout);
+    groupLayout->addLayout(input2Layout);
+    groupLayout->addLayout(output1Layout);
+    groupLayout->addLayout(output2Layout);
+    groupLayout->addLayout(output3Layout);
+    groupLayout->addLayout(buttonLayout);
     groupbox->setLayout(groupLayout);
 
     //set the dialog layout

@@ -87,6 +87,8 @@ void PipeScene::reset(ConfigurationEntity *_entity){
 
     Q_ASSERT(id == 2*size*size-2*size+5);
     Q_ASSERT(items.size() == 2*size*size-2*size+5);
+
+    emit needCalc(QVector<qreal>(items.size(),PIPE_LENGTH));
 }
 
 void PipeScene::restore(){

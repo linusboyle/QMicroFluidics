@@ -12,6 +12,9 @@ public:
 
 public slots:
     void onVelocityChanged(qreal,qreal,qreal);
+
+private:
+    void updateSize();
 };
 
 #endif // VELOCITYINDICATOR_H

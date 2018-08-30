@@ -10,6 +10,7 @@
 #include <QGridLayout>
 #include <QScrollBar>
 #include <QKeyEvent>
+#include <QLabel>
 
 #ifdef QT_DEBUG
 #include <QDebug>
@@ -78,9 +79,15 @@ EditorWidget::EditorWidget(QWidget *parent)
     mainlayout->addLayout(zoomSliderLayout, 0, 1);
     mainlayout->addWidget(resetButton, 1, 1);
 
+    QLabel* label = new QLabel(tr("test"));
+//    label->setFixedWidth(fontMetrics().width("test"));
+    QHBoxLayout* bottomlayout = new QHBoxLayout;
+    bottomlayout->addWidget(indicator);
+    bottomlayout->addWidget(label);
+
     QVBoxLayout* toplayout = new QVBoxLayout();
     toplayout->addLayout(mainlayout);
-    toplayout->addWidget(indicator);
+    toplayout->addLayout(bottomlayout);
 
     setLayout(toplayout);
 
