@@ -31,7 +31,7 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     switch (m_type) {
         case PIPE_NORM:
             if(option->state & QStyle::State_MouseOver)
-                painter->setBrush(Qt::darkMagenta);
+                painter->setBrush(Qt::lightGray);
             else if(option->state & QStyle::State_Selected)
                 painter->setBrush(Qt::black);
             else

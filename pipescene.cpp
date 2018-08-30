@@ -100,7 +100,8 @@ void PipeScene::reset(ConfigurationEntity *_entity){
 }
 
 void PipeScene::restore(){
-    this->reset(entity);
+    if(entity)
+        this->reset(entity);
 }
 
 void PipeScene::deleteSelectionItems() {
