@@ -33,7 +33,10 @@ SOURCES += \
     pipescene.cpp \
     editorview.cpp \
     editorwidget.cpp \
-    pipe.cpp
+    pipe.cpp \
+    microfluidicsserver.cpp \
+    algorithm.cpp \
+    velocityindicator.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,7 +45,9 @@ HEADERS += \
     pipescene.h \
     editorview.h \
     editorwidget.h \
-    pipe.h
+    pipe.h \
+    microfluidicsserver.h \
+    velocityindicator.h
 
 RESOURCES += \
     res.qrc

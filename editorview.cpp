@@ -13,7 +13,6 @@ EditorView::EditorView(EditorWidget *parent)
     setDragMode(RubberBandDrag);
     setRenderHint(QPainter::Antialiasing,true);
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-
 }
 
 //void EditorView::wheelEvent(QWheelEvent *event) {

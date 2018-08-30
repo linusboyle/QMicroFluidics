@@ -1,6 +1,7 @@
 #include "pipescene.h"
 #include "configurationentity.h"
 #include "pipe.h"
+#include "microfluidicsserver.h"
 
 #ifdef QT_DEBUG
 #include <QDebug>
@@ -23,6 +24,7 @@ void PipeScene::reset(ConfigurationEntity *_entity){
         entity = new ConfigurationEntity(*_entity);
     }
 
+    this->items.clear();
     this->clear();
     int size = entity->getSize();
 
@@ -88,13 +90,30 @@ void PipeScene::reset(ConfigurationEntity *_entity){
 }
 
 void PipeScene::restore(){
-    this->items.clear();
     this->reset(entity);
 }
 
 void PipeScene::deleteSelectionItems() {
     QList<QGraphicsItem*> selecteditems = selectedItems();
+
     foreach (QGraphicsItem* item, selecteditems) {
         item->setVisible(false);
     }
+
+    if(selecteditems.size()>0)
+        emit needCalc(getStatusMatrix());
+}
+
+QVector<qreal> PipeScene::getStatusMatrix() const {
+    QVector<qreal> retval;
+
+    for(int i=0;i<items.size();++i){
+        retval.push_back(items.value(i)->isVisible() ? PIPE_LENGTH:0);
+    }
+
+//#ifdef QT_DEBUG
+//    qDebug()<<retval;
+//#endif
+
+    return retval;
 }

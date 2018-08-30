@@ -8,6 +8,7 @@ class ConfigurationEntity;
 
 class NewDesignDialog:public QDialog
 {
+    Q_OBJECT
 public:
     explicit NewDesignDialog(QWidget* parent = nullptr);
     ~NewDesignDialog();

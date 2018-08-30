@@ -6,6 +6,7 @@
 class QSlider;
 class QToolButton;
 class EditorView;
+class VelocityIndicator;
 
 class EditorWidget:public QFrame
 {
@@ -14,6 +15,7 @@ public:
     EditorWidget(QWidget* parent = nullptr);
 
     EditorView* getView() const;
+    VelocityIndicator* getIndicator() const;
 
 signals:
     void requestDeletion();
@@ -34,6 +36,8 @@ private slots:
 
 private:
     EditorView* view;
+    VelocityIndicator* indicator;
+
     QToolButton* zoomInButton;
     QToolButton* zoomOutButton;
     QToolButton* rotateLeftButton;

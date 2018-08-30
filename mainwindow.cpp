@@ -4,6 +4,8 @@
 #include "pipescene.h"
 #include "editorwidget.h"
 #include "editorview.h"
+#include "microfluidicsserver.h"
+#include "velocityindicator.h"
 #include <QApplication>
 #include <QMenuBar>
 #include <QToolBar>
@@ -23,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     editor = new EditorWidget(this);
     editor->getView()->setScene(scene);
     connect(editor,&EditorWidget::requestDeletion,scene,&PipeScene::deleteSelectionItems);
+    connect(scene,&PipeScene::needCalc,MicroFluidicsServer::instance(),&MicroFluidicsServer::queryVelocity,Qt::QueuedConnection);
+    connect(MicroFluidicsServer::instance(),&MicroFluidicsServer::velocityChanged,editor->getIndicator(),&VelocityIndicator::onVelocityChanged);
 
     setCentralWidget(editor);
 
@@ -42,7 +46,7 @@ void MainWindow::initUI(){
     QMenu* editmenu = menuBar()->addMenu(tr("&Edit"));
     QMenu* canvasmenu = menuBar()->addMenu(tr("&Canvas"));
     QMenu* viewmenu = menuBar()->addMenu(tr("&View"));
-
+    QMenu* aboutmenu = menuBar()->addMenu(tr("&About"));
 
     //actions
     QAction* quitaction = filemenu->addAction(QIcon::fromTheme("application-exit",QIcon(":/icons/exit.svg")),tr("&Quit"));
@@ -59,6 +63,7 @@ void MainWindow::initUI(){
     QAction* resetaction = viewmenu->addAction(tr("R&eset"));
 
     QAction* deleteaction = editmenu->addAction(QIcon::fromTheme("edit-delete"),tr("&Delete Selected"));
+    QAction* aboutaction = aboutmenu->addAction(QIcon::fromTheme("help-about"),tr("&About"));
 
     connect(newaction,&QAction::triggered,this,&MainWindow::createNewDesign);
     connect(clearaction,&QAction::triggered,this,&MainWindow::clearScene);
@@ -84,6 +89,8 @@ void MainWindow::initUI(){
         this->scene->deleteSelectionItems();
     });
 
+    connect(aboutaction,&QAction::triggered,this,&MainWindow::showAboutMenu);
+
     //toolbar
     QToolBar* toolbar = new QToolBar(tr("File"));
     addToolBar(Qt::TopToolBarArea,toolbar);
@@ -92,6 +99,7 @@ void MainWindow::initUI(){
     toolbar->addAction(clearaction);
     toolbar->addAction(restoreaction);
     toolbar->addAction(deleteaction);
+    toolbar->addAction(aboutaction);
 }
 
 void MainWindow::createNewDesign(){
@@ -100,6 +108,7 @@ void MainWindow::createNewDesign(){
         if (dialog->getEntity()->checkValidity()) {
             scene->reset(dialog->getEntity());
             editor->resetView();
+            MicroFluidicsServer::instance()->setConfiguration(dialog->getEntity());
         } else {
             QMessageBox::warning(this,tr("Your Configuration is Invalid!"),tr("NOTE:\n"
                                                                               "1.size should be between %1 and %2\n"
@@ -116,9 +125,19 @@ void MainWindow::createNewDesign(){
 
 void MainWindow::clearScene(){
     scene->clear();
+    editor->getIndicator()->clearAllText();
 }
 
 void MainWindow::restoreScene()
 {
     scene->restore();
+}
+
+void MainWindow::showAboutMenu()
+{
+    QMessageBox aboutbox(QMessageBox::Information,tr("QMicroFluidics Designer"),tr("<b>Author:Linus Boyle</b><br>"
+                                                                                   "Algorithm based on <font color=red>Hailong Yao and Weiqing Ji</font>'s work<br>"
+                                                                                   "Under GNU General Public License version 3<br>"
+                                                                                   "You can find the source code on github<br>"));
+    aboutbox.exec();
 }

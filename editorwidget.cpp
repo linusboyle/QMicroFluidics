@@ -1,5 +1,6 @@
 #include "editorwidget.h"
 #include "editorview.h"
+#include "velocityindicator.h"
 #include <qmath.h>
 #include <QSlider>
 #include <QToolButton>
@@ -18,6 +19,7 @@ EditorWidget::EditorWidget(QWidget *parent)
     :QFrame(parent)
 {
     view = new EditorView(this);
+    indicator = new VelocityIndicator(this);
 
     int size = style()->pixelMetric(QStyle::PM_ToolBarIconSize);
     QSize iconsize(size,size);
@@ -70,13 +72,17 @@ EditorWidget::EditorWidget(QWidget *parent)
     resetButton = new QToolButton;
     resetButton->setText(tr("0"));
 
-    QGridLayout *topLayout = new QGridLayout;
-    topLayout->addWidget(view, 0, 0);
-    topLayout->addLayout(rotateSliderLayout, 1, 0);
-    topLayout->addLayout(zoomSliderLayout, 0, 1);
-    topLayout->addWidget(resetButton, 1, 1);
+    QGridLayout *mainlayout = new QGridLayout;
+    mainlayout->addWidget(view, 0, 0);
+    mainlayout->addLayout(rotateSliderLayout, 1, 0);
+    mainlayout->addLayout(zoomSliderLayout, 0, 1);
+    mainlayout->addWidget(resetButton, 1, 1);
 
-    setLayout(topLayout);
+    QVBoxLayout* toplayout = new QVBoxLayout();
+    toplayout->addLayout(mainlayout);
+    toplayout->addWidget(indicator);
+
+    setLayout(toplayout);
 
     //button
     connect(rotateLeftButton, &QToolButton::clicked, this, &EditorWidget::rotateLeft);
@@ -174,3 +180,6 @@ void EditorWidget::keyPressEvent(QKeyEvent *event)
     }
 }
 
+VelocityIndicator* EditorWidget::getIndicator() const {
+    return indicator;
+}
