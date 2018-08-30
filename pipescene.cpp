@@ -122,7 +122,9 @@ void PipeScene::initContextMenu()
 {
     contextmenu = new QMenu();
     QAction* clearaction = contextmenu->addAction(QIcon::fromTheme("edit-clear-all"),tr("&Clear"));
+    QAction* restoreaction = contextmenu->addAction(QIcon::fromTheme("view-restore"),tr("&Restore"));
     connect(clearaction,&QAction::triggered,this,&PipeScene::contextDemandClear);
+    connect(restoreaction,&QAction::triggered,this,&PipeScene::restore);
 }
 
 QVector<qreal> PipeScene::getStatusMatrix() const {

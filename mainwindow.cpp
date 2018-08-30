@@ -11,10 +11,6 @@
 #include <QToolBar>
 #include <QMessageBox>
 
-#ifdef QT_DEBUG
-#include <QDebug>
-#endif
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -118,11 +114,6 @@ void MainWindow::createNewDesign(){
                                                                               "must be between 0 and SIZE\n").arg(PIPE_SIZE_MIN).arg(PIPE_SIZE_MAX));
         }
     }
-#ifdef QT_DEBUG
-    else {
-        qDebug()<<"rejected";
-    }
-#endif
 }
 
 void MainWindow::clearScene(){

@@ -13,7 +13,6 @@ public:
     PipeScene(QObject* parent = nullptr);
     ~PipeScene();
 
-    void restore();
     void reset(ConfigurationEntity* _entity);
 
     QVector<qreal> getStatusMatrix() const;
@@ -23,6 +22,7 @@ protected:
 
 public slots:
     void deleteSelectionItems();
+    void restore();
 
 signals:
     void needCalc(const QVector<qreal>&);
