@@ -192,6 +192,7 @@ void PipeScene::onPipeRequsetResetWidth(qreal id)
         }
         //if reach here,it's legal
         sender->resetWidth(newWidth);
+        emit needCalc(getStatusMatrix());
     }
 }
 
@@ -219,7 +220,18 @@ QVector<qreal> PipeScene::getStatusMatrix() const {
     QVector<qreal> retval;
 
     for(int i=0;i<items.size();++i){
-        retval.push_back(items.value(i)->isVisible() ? PIPE_LENGTH:0);
+        if(items.value(i)->isVisible()){
+            Pipe* item = qgraphicsitem_cast<Pipe*>(items.value(i));
+            if(item->getOrientation() == Pipe::HORIZONTAL){
+                retval.push_back(PIPE_WIDTH/item->boundingRect().height());
+            } else if(item->getOrientation() == Pipe::VERTICAL){
+                retval.push_back(PIPE_WIDTH/item->boundingRect().width());
+            } else {
+                Q_UNREACHABLE();
+            }
+        } else {
+            retval.push_back(0);
+        }
     }
 
     return retval;

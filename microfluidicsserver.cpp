@@ -57,6 +57,7 @@ int MicroFluidicsServer::queryNearItemsIndex(int baseindex, Direction direction)
         break;
     }
 }
+
 void MicroFluidicsServer::setConfiguration(ConfigurationEntity *entity){
 
     size = entity->getSize();

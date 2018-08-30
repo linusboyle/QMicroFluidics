@@ -1,7 +1,7 @@
 #ifndef CONFIGURATIONENTITY_H
 #define CONFIGURATIONENTITY_H
 
-#define PIPE_SIZE_MIN 4
+#define PIPE_SIZE_MIN 3
 #define PIPE_SIZE_MAX 10
 
 class ConfigurationEntity

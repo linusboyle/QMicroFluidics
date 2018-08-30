@@ -38,21 +38,22 @@
 using namespace std;
 #define NAX 0.000000001
 
+#define max_size 200
 struct edge
 {
 	double v; //流速
 	double leng; //管道长度
 	int n1,n2; //边所连接的两个节点，默认从n1流向n2
-}edges[200];
+}edges[max_size];
 struct node
 {          
 	vector<int> elist;  //点所连接的边，按照顺时针的顺序存储下来
 
-}nodes[200];
+}nodes[max_size];
 
-vector< vector<double> >rect(200);//存储方程组(行列式)
+vector< vector<double> >rect(max_size);//存储方程组(行列式)
 
-bool fr[200]; //深度搜索时判断边是否遍历过
+bool fr[max_size]; //深度搜索时判断边是否遍历过
 
 int n,EDGESUM,NODESUM;  //记录网格边长
 
