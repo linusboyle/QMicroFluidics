@@ -80,9 +80,9 @@ void MainWindow::initUI(){
     QAction* resetaction = viewmenu->addAction(tr("R&eset"));
 
     QAction* deleteaction = editmenu->addAction(QIcon::fromTheme("edit-delete",QIcon(":/icons/delete.svg")),tr("&Delete Selected"));
-    QAction* aboutaction = aboutmenu->addAction(QIcon::fromTheme("help-about",QIcon("about.svg")),tr("&About"));
-    QAction* gitaction = aboutmenu->addAction(QIcon::fromTheme("text-x-c++src",QIcon("code.svg")),tr("&Find Source Code"));
-    QAction* helpaction = aboutmenu->addAction(QIcon::fromTheme("help",QIcon("help.svg")),tr("Help"));
+    QAction* aboutaction = aboutmenu->addAction(QIcon::fromTheme("help-about",QIcon(":/icons/about.svg")),tr("&About"));
+    QAction* gitaction = aboutmenu->addAction(QIcon::fromTheme("text-x-c++src",QIcon(":/icons/code.svg")),tr("&Find Source Code"));
+    QAction* helpaction = aboutmenu->addAction(QIcon::fromTheme("help",QIcon(":/icons/help.svg")),tr("Help"));
 
     connect(newaction,&QAction::triggered,this,&MainWindow::createNewDesign);
     connect(clearaction,&QAction::triggered,this,&MainWindow::clearScene);
