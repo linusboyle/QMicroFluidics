@@ -9,26 +9,33 @@ VelocityIndicator::VelocityIndicator(QWidget *parent)
     :QTableWidget(parent)
 {
     setRowCount(1);
-    setColumnCount(5);
-    setHorizontalHeaderLabels(QStringList()<<"Output1"<<"Output2"<<"Output3"<<"Input1"<<"Input2");
+    setColumnCount(7);
+    setHorizontalHeaderLabels(QStringList()<<tr("Output1")<<tr("Output2")<<tr("Output3")
+                              <<tr("Input1")<<tr("Input2")<<tr("Pipe Length")<<tr("Initial Pipe Width"));
 
     QTableWidgetItem* output1 = new QTableWidgetItem(tr("Unknown"));
     QTableWidgetItem* output2 = new QTableWidgetItem(tr("Unknown"));
     QTableWidgetItem* output3 = new QTableWidgetItem(tr("Unknown"));
     QTableWidgetItem* input1 = new QTableWidgetItem(tr("200"));
     QTableWidgetItem* input2 = new QTableWidgetItem(tr("200"));
+    QTableWidgetItem* pipelength = new QTableWidgetItem(tr("1600"));
+    QTableWidgetItem* pipewidth = new QTableWidgetItem(tr("200"));
 
     output1->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
     output2->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
     output3->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
     input1->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
     input2->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+    pipelength->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+    pipewidth->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
 
     setItem(0,0,output1);
     setItem(0,1,output2);
     setItem(0,2,output3);
     setItem(0,3,input1);
     setItem(0,4,input2);
+    setItem(0,5,pipelength);
+    setItem(0,6,pipewidth);
 
     setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
 

@@ -79,16 +79,10 @@ EditorWidget::EditorWidget(QWidget *parent)
     mainlayout->addLayout(zoomSliderLayout, 0, 1);
     mainlayout->addWidget(resetButton, 1, 1);
 
-    QLabel* label = new QLabel(tr("<font color=red>Pipe Length</font>:1600um   "
-                                  "<font color=blue>Initial Width</font>:200um"));
-//    label->setFixedWidth(fontMetrics().width("test"));
-    QHBoxLayout* bottomlayout = new QHBoxLayout;
-    bottomlayout->addWidget(indicator);
-    bottomlayout->addWidget(label);
 
     QVBoxLayout* toplayout = new QVBoxLayout();
     toplayout->addLayout(mainlayout);
-    toplayout->addLayout(bottomlayout);
+    toplayout->addWidget(indicator);
 
     setLayout(toplayout);
 

@@ -52,5 +52,9 @@ HEADERS += \
 RESOURCES += \
     res.qrc
 
-TRANSLATIONS = qmicrofluidics_zh_CN.ts \
-                qmicrofluidics_en.ts
+TRANSLATIONS += translations/qmicrofluidics_en.ts \
+                translations/qmicrofluidics_zh_CN.ts
+
+DISTFILES += \
+    translations/qmicrofluidics_en.ts \
+    translations/qmicrofluidics_zh_CN.ts

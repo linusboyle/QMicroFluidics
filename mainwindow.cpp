@@ -113,18 +113,31 @@ void MainWindow::initUI(){
     connect(saveaction,&QAction::triggered,this,&MainWindow::saveToImage);
 
     //toolbar
-    QToolBar* toolbar = new QToolBar(tr("File"));
-    addToolBar(Qt::TopToolBarArea,toolbar);
-    toolbar->addAction(quitaction);
-    toolbar->addAction(printaction);
-    toolbar->addAction(saveaction);
-    toolbar->addAction(newaction);
-    toolbar->addAction(clearaction);
-    toolbar->addAction(restoreaction);
-    toolbar->addAction(deleteaction);
-    toolbar->addAction(aboutaction);
-    toolbar->addAction(gitaction);
-    toolbar->addAction(helpaction);
+    QToolBar* filetoolbar = new QToolBar(tr("File"));
+    filetoolbar->setMovable(false);
+    addToolBar(Qt::LeftToolBarArea,filetoolbar);
+    filetoolbar->addAction(quitaction);
+    filetoolbar->addAction(printaction);
+    filetoolbar->addAction(saveaction);
+
+    QToolBar* canvastoolbar = new QToolBar(tr("Canvas"));
+    canvastoolbar->setMovable(false);
+    addToolBar(Qt::LeftToolBarArea,canvastoolbar);
+    canvastoolbar->addAction(newaction);
+    canvastoolbar->addAction(clearaction);
+    canvastoolbar->addAction(restoreaction);
+
+    QToolBar* edittoolbar = new QToolBar(tr("Edit"));
+    edittoolbar->setMovable(false);
+    addToolBar(Qt::LeftToolBarArea,edittoolbar);
+    edittoolbar->addAction(deleteaction);
+
+    QToolBar* abouttoolbar = new QToolBar(tr("About"));
+    abouttoolbar->setMovable(false);
+    addToolBar(Qt::LeftToolBarArea,abouttoolbar);
+    abouttoolbar->addAction(aboutaction);
+    abouttoolbar->addAction(gitaction);
+    abouttoolbar->addAction(helpaction);
 }
 
 void MainWindow::createNewDesign(){
