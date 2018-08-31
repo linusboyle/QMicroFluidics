@@ -22,6 +22,7 @@ private:
     void initUI();
     void initGeometry();
     void initTranslations();
+    void initFont();
 
     PipeScene* scene;
     EditorWidget* editor;

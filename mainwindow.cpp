@@ -19,11 +19,13 @@
 #include <QFileDialog>
 #include <QTranslator>
 #include <QDebug>
+#include <QFontDatabase>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     initTranslations();
+    initFont();
 
     initUI();
 
@@ -63,12 +65,12 @@ void MainWindow::initUI(){
 
     //actions
     QAction* quitaction = filemenu->addAction(QIcon::fromTheme("application-exit",QIcon(":/icons/exit.svg")),tr("&Quit"));
-    QAction* printaction = filemenu->addAction(QIcon::fromTheme("fileprint"),tr("&Print"));
-    QAction* saveaction = filemenu->addAction(QIcon::fromTheme("filesave"),tr("&Save To Image"));
+    QAction* printaction = filemenu->addAction(QIcon::fromTheme("fileprint",QIcon(":/icons/print.svg")),tr("&Print"));
+    QAction* saveaction = filemenu->addAction(QIcon::fromTheme("filesave",QIcon(":/icons/save.svg")),tr("&Save To Image"));
 
-    QAction* newaction = canvasmenu->addAction(QIcon::fromTheme("filenew"),tr("&New"));
-    QAction* clearaction = canvasmenu->addAction(QIcon::fromTheme("edit-clear-all"),tr("&Clear"));
-    QAction* restoreaction = canvasmenu->addAction(QIcon::fromTheme("view-restore"),tr("&Restore"));
+    QAction* newaction = canvasmenu->addAction(QIcon::fromTheme("filenew",QIcon(":/icons/new.svg")),tr("&New"));
+    QAction* clearaction = canvasmenu->addAction(QIcon::fromTheme("edit-clear-all",QIcon(":/icons/clear.svg")),tr("&Clear"));
+    QAction* restoreaction = canvasmenu->addAction(QIcon::fromTheme("view-restore",QIcon(":/icons/restore.svg")),tr("&Restore"));
 
     //these five have already been on the central widget and need no icon
     QAction* zoominaction = viewmenu->addAction(tr("Zoom&In"));
@@ -77,10 +79,10 @@ void MainWindow::initUI(){
     QAction* rotaterightaction = viewmenu->addAction(tr("Rotate&Right"));
     QAction* resetaction = viewmenu->addAction(tr("R&eset"));
 
-    QAction* deleteaction = editmenu->addAction(QIcon::fromTheme("edit-delete"),tr("&Delete Selected"));
-    QAction* aboutaction = aboutmenu->addAction(QIcon::fromTheme("help-about"),tr("&About"));
-    QAction* gitaction = aboutmenu->addAction(QIcon::fromTheme("text-x-c++src"),tr("&Find Source Code"));
-    QAction* helpaction = aboutmenu->addAction(QIcon::fromTheme("help"),tr("Help"));
+    QAction* deleteaction = editmenu->addAction(QIcon::fromTheme("edit-delete",QIcon(":/icons/delete.svg")),tr("&Delete Selected"));
+    QAction* aboutaction = aboutmenu->addAction(QIcon::fromTheme("help-about",QIcon("about.svg")),tr("&About"));
+    QAction* gitaction = aboutmenu->addAction(QIcon::fromTheme("text-x-c++src",QIcon("code.svg")),tr("&Find Source Code"));
+    QAction* helpaction = aboutmenu->addAction(QIcon::fromTheme("help",QIcon("help.svg")),tr("Help"));
 
     connect(newaction,&QAction::triggered,this,&MainWindow::createNewDesign);
     connect(clearaction,&QAction::triggered,this,&MainWindow::clearScene);
@@ -234,4 +236,15 @@ void MainWindow::initTranslations(){
         qDebug()<<"install translation failed!";
         translator->deleteLater();
     }
+}
+
+void MainWindow::initFont(){
+    QFont font;
+    int fontid = QFontDatabase::addApplicationFont(":/fonts/notosanssc.otf");
+    QStringList family = QFontDatabase::applicationFontFamilies(fontid);
+
+    font.setFamily(family.at(0));
+    font.setPointSize(11);
+
+    qApp->setFont(font);
 }

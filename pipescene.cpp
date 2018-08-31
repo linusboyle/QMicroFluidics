@@ -20,8 +20,7 @@ static inline QColor colorFilter(qreal velocity){
         return Qt::green;
     } else if(velocity >= 80 && velocity <100){
         return Qt::darkGreen;
-    }
-    else if(velocity >=100 && velocity <120){
+    } else if(velocity >=100 && velocity <120){
         return Qt::magenta;
     } else if(velocity >=120 && velocity <140){
         return Qt::darkMagenta;
@@ -35,6 +34,11 @@ PipeScene::PipeScene(QObject *parent):
     QGraphicsScene(parent),entity(nullptr)
 {
     initContextMenu();
+
+    addText(QStringLiteral("Welcome To QMicroFluidics Designer!\n"
+                           "Start By Clicking 'New' in the Menu or Toolbar")
+            );
+
     connect(this,&PipeScene::needCalc,MicroFluidicsServer::instance(),&MicroFluidicsServer::queryVelocity,Qt::QueuedConnection);
     connect(MicroFluidicsServer::instance(),&MicroFluidicsServer::demandColorChange,this,&PipeScene::changePipeColor);
 }
@@ -239,8 +243,8 @@ void PipeScene::deleteSelectionItems() {
 void PipeScene::initContextMenu()
 {
     contextmenu = new QMenu();
-    QAction* clearaction = contextmenu->addAction(QIcon::fromTheme("edit-clear-all"),tr("&Clear"));
-    QAction* restoreaction = contextmenu->addAction(QIcon::fromTheme("view-restore"),tr("&Restore"));
+    QAction* clearaction = contextmenu->addAction(QIcon::fromTheme("edit-clear-all",QIcon(":/icons/clear.svg")),tr("&Clear"));
+    QAction* restoreaction = contextmenu->addAction(QIcon::fromTheme("view-restore",QIcon(":/icons/restore.svg")),tr("&Restore"));
     connect(clearaction,&QAction::triggered,this,&PipeScene::contextDemandClear);
     connect(restoreaction,&QAction::triggered,this,&PipeScene::restore);
 }
