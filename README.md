@@ -7,6 +7,7 @@ This program supports two languages:English and simplified Chinese.Its main feat
 - Easy-to-use UI,with selectable objects and elegant operation interface
 - Taking advantage of Graphics View Framework of Qt, it is possible to zoom in/out,rotate smoothly
 - Print the design directly or save as a .bmp,.jpg or .png file
+- Colorize the pipe according to the velocity of liquid inside
 
 ## Dependencies
 
@@ -24,6 +25,7 @@ QMicroFluidics 是简洁、优雅的生物芯片模拟器，使用Qt作为图形
 - 可拖拽式的操作方法，设计更省心
 - 英文/简体中文双语支持
 - 遵循freedesktop桌面规范，让自定义图标美化窗口！(X11 only)
+- 根据流速大小自动调整颜色，设计更加方便
 
 ## 编译依赖
 
