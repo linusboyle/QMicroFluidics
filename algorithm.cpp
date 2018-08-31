@@ -27,6 +27,7 @@
 ***
 ***
 ***************************************************************************/
+
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -361,8 +362,6 @@ void getans()
 					}
 					break;
 				}
-			// if (mjj == 0)
-			// 	cout<<"454354354354354"<<endl;
 		}
 		for (int j=0; j<n; j++)
 			if (i!=j && (abs(rect[j][num])>NAX))

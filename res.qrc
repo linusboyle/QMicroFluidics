@@ -6,4 +6,7 @@
         <file alias="rotateright.png">resource/rotateright.png</file>
         <file alias="exit.svg">resource/application-exit.svg</file>
     </qresource>
+    <qresource prefix="/paper">
+        <file alias="paper.pdf">resource/Random design of microfluidics.pdf</file>
+    </qresource>
 </RCC>

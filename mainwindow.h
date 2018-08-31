@@ -31,6 +31,10 @@ private slots:
     void restoreScene();
     void showAboutMenu();
     void popupWarning();
+    void openSourceCodePage();
+    void openPaper();
+    void printDesign();
+    void saveToImage();
 };
 
 

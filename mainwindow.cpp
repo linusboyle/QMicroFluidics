@@ -11,6 +11,12 @@
 #include <QToolBar>
 #include <QMessageBox>
 #include <QScreen>
+#include <QDesktopServices>
+#include <QUrl>
+#include <QTemporaryFile>
+#include <QPrinter>
+#include <QPrintDialog>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -55,6 +61,8 @@ void MainWindow::initUI(){
 
     //actions
     QAction* quitaction = filemenu->addAction(QIcon::fromTheme("application-exit",QIcon(":/icons/exit.svg")),tr("&Quit"));
+    QAction* printaction = filemenu->addAction(QIcon::fromTheme("fileprint"),tr("&Print"));
+    QAction* saveaction = filemenu->addAction(QIcon::fromTheme("filesave"),tr("&Save To Image"));
 
     QAction* newaction = canvasmenu->addAction(QIcon::fromTheme("filenew"),tr("&New"));
     QAction* clearaction = canvasmenu->addAction(QIcon::fromTheme("edit-clear-all"),tr("&Clear"));
@@ -69,6 +77,8 @@ void MainWindow::initUI(){
 
     QAction* deleteaction = editmenu->addAction(QIcon::fromTheme("edit-delete"),tr("&Delete Selected"));
     QAction* aboutaction = aboutmenu->addAction(QIcon::fromTheme("help-about"),tr("&About"));
+    QAction* gitaction = aboutmenu->addAction(QIcon::fromTheme("text-x-c++src"),tr("&Find Source Code"));
+    QAction* helpaction = aboutmenu->addAction(QIcon::fromTheme("help"),tr("Help"));
 
     connect(newaction,&QAction::triggered,this,&MainWindow::createNewDesign);
     connect(clearaction,&QAction::triggered,this,&MainWindow::clearScene);
@@ -95,16 +105,24 @@ void MainWindow::initUI(){
     });
 
     connect(aboutaction,&QAction::triggered,this,&MainWindow::showAboutMenu);
+    connect(gitaction,&QAction::triggered,this,&MainWindow::openSourceCodePage);
+    connect(helpaction,&QAction::triggered,this,&MainWindow::openPaper);
+    connect(printaction,&QAction::triggered,this,&MainWindow::printDesign);
+    connect(saveaction,&QAction::triggered,this,&MainWindow::saveToImage);
 
     //toolbar
     QToolBar* toolbar = new QToolBar(tr("File"));
     addToolBar(Qt::TopToolBarArea,toolbar);
     toolbar->addAction(quitaction);
+    toolbar->addAction(printaction);
+    toolbar->addAction(saveaction);
     toolbar->addAction(newaction);
     toolbar->addAction(clearaction);
     toolbar->addAction(restoreaction);
     toolbar->addAction(deleteaction);
     toolbar->addAction(aboutaction);
+    toolbar->addAction(gitaction);
+    toolbar->addAction(helpaction);
 }
 
 void MainWindow::createNewDesign(){
@@ -153,4 +171,41 @@ void MainWindow::initGeometry(){
     QScreen* primaryscreen = QGuiApplication::primaryScreen();
     QRect rect = primaryscreen->geometry();
     setGeometry(QRect((rect.width()-this->width())/2,(rect.height()-this->height())/2,this->width(),this->height()));
+}
+
+void MainWindow::openSourceCodePage(){
+    QDesktopServices::openUrl(QUrl("https://github.com/linusboyle/QMicroFluidics"));
+}
+
+void MainWindow::openPaper(){
+    QFile paper(":/paper/paper.pdf");
+
+    QTemporaryFile* tempfile = QTemporaryFile::createNativeFile(paper);
+
+    QDesktopServices::openUrl(QUrl::fromLocalFile(tempfile->fileName()));
+}
+
+void MainWindow::printDesign(){
+    QPrinter printer(QPrinter::HighResolution);
+
+    if(QPrintDialog(&printer).exec() == QDialog::Accepted){
+        QPainter painter(&printer);
+        painter.setRenderHint(QPainter::Antialiasing);
+
+        this->scene->render(&painter);
+    }
+}
+
+void MainWindow::saveToImage(){
+    QString fileName= QFileDialog::getSaveFileName(this, "Save image", QCoreApplication::applicationDirPath(), "BMP Files (*.bmp);;JPEG (*.JPEG);;PNG (*.png)" );
+    if (!fileName.isNull())
+    {
+        scene->clearSelection();
+        QImage image(scene->sceneRect().size().toSize(), QImage::Format_ARGB32);
+        QPainter painter(&image);
+
+        scene->render(&painter);
+
+        image.save(fileName);
+    }
 }

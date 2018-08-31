@@ -117,6 +117,8 @@ void PipeScene::reset(ConfigurationEntity *_entity){
     Q_ASSERT(id == 2*size*size-2*size+5);
     Q_ASSERT(items.size() == 2*size*size-2*size+5);
 
+    setSceneRect(this->itemsBoundingRect());
+
     emit needCalc(QVector<qreal>(items.size(),PIPE_LENGTH));
 }
 
@@ -144,7 +146,7 @@ void PipeScene::onPipeRequsetResetWidth(qreal id)
 
     qreal newWidth = QInputDialog::getDouble(qApp->activeWindow(),
                                              QObject::tr("Change Width"),
-                                             QObject::tr("Input New Width:"),
+                                             QObject::tr("Input New Width:(um)"),
                                              basevalue,0,2147483647,1,
                                              &ok,Qt::Dialog|Qt::FramelessWindowHint);
 
