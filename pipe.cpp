@@ -6,6 +6,16 @@
 Pipe::Pipe(int id, qreal x, qreal y, qreal width, qreal height, Orientation orientation, Types type, QGraphicsItem *parent)
     :QGraphicsItem(parent),m_id(id),baseX(x),baseY(y),m_width(width),m_height(height),m_orientation(orientation),m_type(type)
 {
+    //TODO
+    //if the color works,then the control flow here is useless
+    if(type == PIPE_INPUT)
+        m_defaultcolor = QColor(Qt::darkBlue);
+    else if(type == PIPE_NORM)
+        m_defaultcolor = QColor(Qt::darkGray);
+    else
+        m_defaultcolor = QColor(Qt::darkCyan);
+
+
     if(m_type == PIPE_NORM){
         setFlags(ItemIsSelectable);
         setAcceptHoverEvents(true);
@@ -15,7 +25,11 @@ Pipe::Pipe(int id, qreal x, qreal y, qreal width, qreal height, Orientation orie
 
 QRectF Pipe::boundingRect() const {
     QRectF actualRect;
-    if(m_orientation == VERTICAL){
+
+    if(m_type != PIPE_NORM){
+        actualRect.setRect(baseX,baseY,m_width,m_height);
+    }
+    else if(m_orientation == VERTICAL){
         actualRect.setRect(baseX,baseY-PIPE_WIDTH,m_width,m_height+PIPE_WIDTH*2);
     } else if(m_orientation == HORIZONTAL){
         actualRect.setRect(baseX-PIPE_WIDTH,baseY,m_width+PIPE_WIDTH*2,m_height);
@@ -43,13 +57,13 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
             else if(option->state & QStyle::State_Selected)
                 painter->setBrush(Qt::black);
             else
-                painter->setBrush(Qt::darkGray);
+                painter->setBrush(m_defaultcolor);
             painter->drawRect(actualRect);
             break;
             //only normal pipe needs to draw more space
         case PIPE_INPUT:
-            painter->setBrush(Qt::darkBlue);
-            painter->drawRect(QRectF(baseX,baseY,m_width,m_height));
+            painter->setBrush(m_defaultcolor);
+            painter->drawRect(actualRect);
 
             painter->setPen(Qt::white);
             painter->setBrush(Qt::NoBrush);
@@ -57,8 +71,8 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
                                                                      "N"));
             break;
         case PIPE_OUTPUT:
-            painter->setBrush(Qt::darkCyan);
-            painter->drawRect(QRectF(baseX,baseY,m_width,m_height));
+            painter->setBrush(m_defaultcolor);
+            painter->drawRect(actualRect);
 
             painter->setPen(Qt::white);
             painter->setBrush(Qt::NoBrush);
@@ -122,5 +136,11 @@ Pipe::Orientation Pipe::getOrientation() const {
 }
 
 QRectF Pipe::realRect() const {
+    //it's the same with i/o pipes
     return QRectF(baseX,baseY,m_width,m_height);
+}
+
+void Pipe::setDefaultColor(QColor color){
+    m_defaultcolor = color;
+    update();
 }

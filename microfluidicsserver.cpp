@@ -1,19 +1,15 @@
 #include "microfluidicsserver.h"
 #include "configurationentity.h"
-#include <tuple>
 
-#ifdef QT_DEBUG
-#include <QDebug>
-#endif
-
-std::tuple<double,double,double> caluconspeed(int num, const QVector<double>&length, int i1, int i2, int o1, int o2, int o3);
+QVector<qreal> caluconspeed(int num, const QVector<double>&length, int i1, int i2, int o1, int o2, int o3);
 
 void MicroFluidicsServer::queryVelocity(const QVector<qreal> &design)
 {
     Q_ASSERT(design.size() == edgeNumber);
     auto retval = caluconspeed(size,design,input1pos,input2pos,output1pos,output2pos,output3pos);
 
-    emit velocityChanged(std::get<0>(retval),std::get<1>(retval),std::get<2>(retval));
+    emit demandIndicatorVelocityChange(retval.at(edgeNumber-3),retval.at(edgeNumber-2),retval.at(edgeNumber-1));
+    emit demandColorChange(retval);
 }
 
 int MicroFluidicsServer::queryNearItemsIndex(int baseindex, Direction direction) {

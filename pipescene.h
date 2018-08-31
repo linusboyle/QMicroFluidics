@@ -6,6 +6,7 @@
 class ConfigurationEntity;
 class QMenu;
 class EditorView;
+class Pipe;
 
 #define PIPE_REAL_WIDTH qreal(200)
 
@@ -25,6 +26,7 @@ protected:
 public slots:
     void deleteSelectionItems();
     void restore();
+    void changePipeColor(QVector<qreal> velocity);
 
 private slots:
     void onPipeRequsetResetWidth(qreal id);
@@ -37,7 +39,7 @@ signals:
 private:
     ConfigurationEntity* entity;
     QMenu* contextmenu;
-    QHash<int,QGraphicsItem*> items;
+    QHash<int,Pipe*> items;
     EditorView* view;
 
     QVector<qreal> getStatusMatrix() const;

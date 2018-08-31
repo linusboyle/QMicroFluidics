@@ -11,10 +11,32 @@
 #include <QDebug>
 #endif
 
+static inline QColor colorFilter(qreal velocity){
+    if(velocity>0 && velocity<10){
+        return Qt::cyan;
+    } else if(velocity >= 10 && velocity <40){
+        return Qt::darkCyan;
+    }else if(velocity >=40 && velocity <80){
+        return Qt::green;
+    } else if(velocity >= 80 && velocity <100){
+        return Qt::darkGreen;
+    }
+    else if(velocity >=100 && velocity <120){
+        return Qt::magenta;
+    } else if(velocity >=120 && velocity <140){
+        return Qt::darkMagenta;
+    } else if(velocity >=140){
+        return Qt::darkRed;
+    } else
+        return Qt::darkGray;
+}
+
 PipeScene::PipeScene(QObject *parent):
     QGraphicsScene(parent),entity(nullptr)
 {
     initContextMenu();
+    connect(this,&PipeScene::needCalc,MicroFluidicsServer::instance(),&MicroFluidicsServer::queryVelocity,Qt::QueuedConnection);
+    connect(MicroFluidicsServer::instance(),&MicroFluidicsServer::demandColorChange,this,&PipeScene::changePipeColor);
 }
 
 PipeScene::~PipeScene(){
@@ -129,7 +151,7 @@ void PipeScene::restore(){
 
 void PipeScene::onPipeRequsetResetWidth(qreal id)
 {
-    Pipe* sender = qgraphicsitem_cast<Pipe*>(items.value(id));
+    Pipe* sender = items.value(id);
     QRectF boundingrect = sender->realRect();
 
     /*
@@ -161,7 +183,7 @@ void PipeScene::onPipeRequsetResetWidth(qreal id)
             int rightid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::RIGHT);
 
             if(leftid>=0){
-                qreal leftline = items.value(leftid)->boundingRect().right();
+                qreal leftline = items.value(leftid)->realRect().right();
                 if(newleftx-leftline < PIPE_WIDTH){
                     emit requestPopUpWarningBox();
                     return;
@@ -169,7 +191,7 @@ void PipeScene::onPipeRequsetResetWidth(qreal id)
             }
 
             if(rightid>=0){
-                qreal rightline = items.value(rightid)->boundingRect().left();
+                qreal rightline = items.value(rightid)->realRect().left();
                 if(rightline-newrightx < PIPE_WIDTH){
                     emit requestPopUpWarningBox();
                     return;
@@ -182,7 +204,7 @@ void PipeScene::onPipeRequsetResetWidth(qreal id)
             int downid = MicroFluidicsServer::instance()->queryNearItemsIndex(id,MicroFluidicsServer::DOWN);
 
             if(upid>=0){
-                qreal upline = items.value(upid)->boundingRect().bottom();
+                qreal upline = items.value(upid)->realRect().bottom();
                 if(newupy-upline < PIPE_WIDTH){
                     emit requestPopUpWarningBox();
                     return;
@@ -190,7 +212,7 @@ void PipeScene::onPipeRequsetResetWidth(qreal id)
             }
 
             if(downid>=0){
-                qreal downline = items.value(downid)->boundingRect().top();
+                qreal downline = items.value(downid)->realRect().top();
                 if(downline-newdowny < PIPE_WIDTH){
                     emit requestPopUpWarningBox();
                     return;
@@ -228,7 +250,7 @@ QVector<qreal> PipeScene::getStatusMatrix() const {
 
     for(int i=0;i<items.size();++i){
         if(items.value(i)->isVisible()){
-            Pipe* item = qgraphicsitem_cast<Pipe*>(items.value(i));
+            Pipe* item = items.value(i);
             if(item->getOrientation() == Pipe::HORIZONTAL){
                 retval.push_back(PIPE_WIDTH/item->boundingRect().height());
             } else if(item->getOrientation() == Pipe::VERTICAL){
@@ -253,4 +275,12 @@ void PipeScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
 void PipeScene::setView(EditorView *_view){
     view = _view;
+}
+
+void PipeScene::changePipeColor(QVector<qreal> velocity){
+    for(int i=0,n=velocity.size();i<n;++i){
+        QColor newcolor = colorFilter(velocity.at(i));
+        items.value(i)->setDefaultColor(newcolor);
+        qDebug()<<i<<newcolor;
+    }
 }

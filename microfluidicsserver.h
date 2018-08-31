@@ -10,8 +10,8 @@ class MicroFluidicsServer:public QObject
     Q_OBJECT
 
 signals:
-    void velocityChanged(qreal,qreal,qreal);
-
+    void demandIndicatorVelocityChange(qreal,qreal,qreal);
+    void demandColorChange(QVector<qreal>);
 public:
     inline static MicroFluidicsServer* instance() {
         static MicroFluidicsServer* theinstance = new MicroFluidicsServer();
