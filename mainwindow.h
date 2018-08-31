@@ -21,6 +21,7 @@ public slots:
 private:
     void initUI();
     void initGeometry();
+    void initTranslations();
 
     PipeScene* scene;
     EditorWidget* editor;

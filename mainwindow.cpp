@@ -17,10 +17,14 @@
 #include <QPrinter>
 #include <QPrintDialog>
 #include <QFileDialog>
+#include <QTranslator>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    initTranslations();
+
     initUI();
 
     scene = new PipeScene(this);
@@ -207,5 +211,16 @@ void MainWindow::saveToImage(){
         scene->render(&painter);
 
         image.save(fileName);
+    }
+}
+
+void MainWindow::initTranslations(){
+    QTranslator* translator = new QTranslator();
+
+    if(translator->load(QString(":/translations/tr_")+QLocale::system().name()))
+        qApp->installTranslator(translator);
+    else {
+        qDebug()<<"install translation failed!";
+        translator->deleteLater();
     }
 }

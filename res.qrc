@@ -9,4 +9,8 @@
     <qresource prefix="/paper">
         <file alias="paper.pdf">resource/Random design of microfluidics.pdf</file>
     </qresource>
+    <qresource prefix="/translations">
+        <file alias="tr_en.qm">resource/qmicrofluidics_en.qm</file>
+        <file alias="tr_zh_CN.qm">resource/qmicrofluidics_zh_CN.qm</file>
+    </qresource>
 </RCC>
