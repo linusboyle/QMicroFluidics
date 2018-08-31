@@ -6,16 +6,7 @@
 Pipe::Pipe(int id, qreal x, qreal y, qreal width, qreal height, Orientation orientation, Types type, QGraphicsItem *parent)
     :QGraphicsItem(parent),m_id(id),baseX(x),baseY(y),m_width(width),m_height(height),m_orientation(orientation),m_type(type)
 {
-    //TODO
-    //if the color works,then the control flow here is useless
-    if(type == PIPE_INPUT)
-        m_defaultcolor = QColor(Qt::darkBlue);
-    else if(type == PIPE_NORM)
-        m_defaultcolor = QColor(Qt::darkGray);
-    else
-        m_defaultcolor = QColor(Qt::darkCyan);
-
-
+    m_defaultcolor = QColor(Qt::darkGray);
     if(m_type == PIPE_NORM){
         setFlags(ItemIsSelectable);
         setAcceptHoverEvents(true);
