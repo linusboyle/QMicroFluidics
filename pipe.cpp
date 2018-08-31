@@ -34,6 +34,8 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
     if(option->state & QStyle::State_MouseOver)
         setZValue(1);
+    else if(option->state & QStyle::State_Selected)
+        setZValue(1);
     else
         setZValue(0);
 
