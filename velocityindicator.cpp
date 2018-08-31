@@ -9,20 +9,26 @@ VelocityIndicator::VelocityIndicator(QWidget *parent)
     :QTableWidget(parent)
 {
     setRowCount(1);
-    setColumnCount(3);
-    setHorizontalHeaderLabels(QStringList()<<"Output1"<<"Output2"<<"Output3");
+    setColumnCount(5);
+    setHorizontalHeaderLabels(QStringList()<<"Output1"<<"Output2"<<"Output3"<<"Input1"<<"Input2");
 
     QTableWidgetItem* output1 = new QTableWidgetItem(tr("Unknown"));
     QTableWidgetItem* output2 = new QTableWidgetItem(tr("Unknown"));
     QTableWidgetItem* output3 = new QTableWidgetItem(tr("Unknown"));
+    QTableWidgetItem* input1 = new QTableWidgetItem(tr("200"));
+    QTableWidgetItem* input2 = new QTableWidgetItem(tr("200"));
 
     output1->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
     output2->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
     output3->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+    input1->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+    input2->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
 
     setItem(0,0,output1);
     setItem(0,1,output2);
     setItem(0,2,output3);
+    setItem(0,3,input1);
+    setItem(0,4,input2);
 
     setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
 

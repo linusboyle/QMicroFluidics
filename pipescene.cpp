@@ -72,6 +72,7 @@ void PipeScene::reset(ConfigurationEntity *_entity){
                                  PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_INPUT);
     addItem(input1_pipe);
     items.insert(id,input1_pipe);
+    connect(input1_pipe,&Pipe::requestWidthChange,this,&PipeScene::onPipeRequsetResetWidth);
     id++;
 
     int indexIN2 = entity->getInput2Pos();
@@ -79,6 +80,7 @@ void PipeScene::reset(ConfigurationEntity *_entity){
                                  PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_INPUT);
     addItem(input2_pipe);
     items.insert(id,input2_pipe);
+    connect(input2_pipe,&Pipe::requestWidthChange,this,&PipeScene::onPipeRequsetResetWidth);
     id++;
 
     int indexOUT1 = entity->getOutput1Pos();
@@ -87,6 +89,7 @@ void PipeScene::reset(ConfigurationEntity *_entity){
                                   PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_OUTPUT);
     addItem(output1_pipe);
     items.insert(id,output1_pipe);
+    connect(output1_pipe,&Pipe::requestWidthChange,this,&PipeScene::onPipeRequsetResetWidth);
     id++;
 
     int indexOUT2 = entity->getOutput2Pos();
@@ -95,6 +98,7 @@ void PipeScene::reset(ConfigurationEntity *_entity){
                                   PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_OUTPUT);
     addItem(output2_pipe);
     items.insert(id,output2_pipe);
+    connect(output2_pipe,&Pipe::requestWidthChange,this,&PipeScene::onPipeRequsetResetWidth);
     id++;
 
     int indexOUT3 = entity->getOutput3Pos();
@@ -103,6 +107,7 @@ void PipeScene::reset(ConfigurationEntity *_entity){
                                   PIPE_WIDTH,PIPE_LENGTH,Pipe::VERTICAL,Pipe::PIPE_OUTPUT);
     addItem(output3_pipe);
     items.insert(id,output3_pipe);
+    connect(output3_pipe,&Pipe::requestWidthChange,this,&PipeScene::onPipeRequsetResetWidth);
     id++;
 
 #ifdef QT_DEBUG

@@ -33,21 +33,8 @@ public slots:
     void queryVelocity(const QVector<qreal>& design);
 
 private:
-//    typedef struct {
-//        QVector<int> relatedEdges;
-//    } Node;
-//    typedef struct{
-//        qreal velocity;
-//        qreal length;
-//        int sourceNodeIndex;
-//        int destNodeIndex;
-//    } Edge;
-//    QVector<Node> m_nodes;
-//    QVector<Edge> m_edges;
 
-    inline MicroFluidicsServer(){
-//        equaltion = nullptr;
-    }
+    inline MicroFluidicsServer(){}
     inline ~MicroFluidicsServer(){}
     MicroFluidicsServer(const MicroFluidicsServer&) = delete;
     MicroFluidicsServer& operator= (const MicroFluidicsServer&) = delete;
@@ -62,18 +49,10 @@ private:
     int output2pos;
     int output3pos;
 
-//    QVector<QVector<qreal>>* equation;
+    std::array<int,2> inputindex;
+    std::array<int,3> outputindex;
 
-//    void initEquation();
-//    void calcAnswer();
-
-//    int getEdgeIndex(int nodeX, int nodeY, int direction);
-//    bool checkeEdgeValid(int nodex,int nodey,int direction);
-
-//    void findLine(int x,int y,int endEdge);
-//    void recursionLine(int nodex,int nodey,int direction,QVector<qreal>& retval,int endEdge);
-//    bool DFS(int nodex,int nodey,QVector<qreal>& retval,int endEdge);
-//    void getVoltageDelta(int inputIndex);
+    int getOutputIndex(int);
 };
 
 #endif // MICROFLUIDICSSERVER_H
