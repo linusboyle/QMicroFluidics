@@ -130,7 +130,7 @@ void PipeScene::restore(){
 void PipeScene::onPipeRequsetResetWidth(qreal id)
 {
     Pipe* sender = qgraphicsitem_cast<Pipe*>(items.value(id));
-    QRectF boundingrect = sender->boundingRect();
+    QRectF boundingrect = sender->realRect();
 
     /*
      * get the new width with dialog

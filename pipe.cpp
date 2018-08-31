@@ -3,10 +3,6 @@
 #include <QStyleOption>
 #include <QGraphicsSceneMouseEvent>
 
-#ifdef QT_DEBUG
-#include <QDebug>
-#endif
-
 Pipe::Pipe(int id, qreal x, qreal y, qreal width, qreal height, Orientation orientation, Types type, QGraphicsItem *parent)
     :QGraphicsItem(parent),m_id(id),baseX(x),baseY(y),m_width(width),m_height(height),m_orientation(orientation),m_type(type)
 {
@@ -18,8 +14,14 @@ Pipe::Pipe(int id, qreal x, qreal y, qreal width, qreal height, Orientation orie
 }
 
 QRectF Pipe::boundingRect() const {
-    //no pen width :)
-    return QRectF(baseX,baseY,m_width,m_height);
+    QRectF actualRect;
+    if(m_orientation == VERTICAL){
+        actualRect.setRect(baseX,baseY-PIPE_WIDTH,m_width,m_height+PIPE_WIDTH*2);
+    } else if(m_orientation == HORIZONTAL){
+        actualRect.setRect(baseX-PIPE_WIDTH,baseY,m_width+PIPE_WIDTH*2,m_height);
+    }
+
+    return actualRect;
 }
 
 void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -29,6 +31,8 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
         setZValue(1);
     else
         setZValue(0);
+
+    QRectF actualRect = boundingRect();
 
     painter->setPen(Qt::NoPen);
     switch (m_type) {
@@ -40,8 +44,9 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
                 painter->setBrush(Qt::black);
             else
                 painter->setBrush(Qt::darkGray);
-            painter->drawRect(QRectF(baseX,baseY,m_width,m_height));
+            painter->drawRect(actualRect);
             break;
+            //only normal pipe needs to draw more space
         case PIPE_INPUT:
             painter->setBrush(Qt::darkBlue);
             painter->drawRect(QRectF(baseX,baseY,m_width,m_height));
@@ -63,9 +68,6 @@ void Pipe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
             break;
         default:
             Q_UNREACHABLE();
-#ifdef QT_DEBUG
-        qDebug()<<"enumeration in pipe failed!";
-#endif
             break;
     }
 }
@@ -117,4 +119,8 @@ Pipe::Types Pipe::getType() const {
 
 Pipe::Orientation Pipe::getOrientation() const {
     return m_orientation;
+}
+
+QRectF Pipe::realRect() const {
+    return QRectF(baseX,baseY,m_width,m_height);
 }

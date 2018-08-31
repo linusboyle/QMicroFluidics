@@ -3,9 +3,14 @@
 
 #include <QGraphicsItem>
 
+#define PIPE_LENGTH qreal(80)
+#define PIPE_WIDTH qreal(10)
+
 class Pipe :public QObject,public QGraphicsItem
 {
     Q_OBJECT
+
+    Q_INTERFACES(QGraphicsItem)
 public:
     enum Types {
         PIPE_NORM = 1,
@@ -24,6 +29,7 @@ public:
              Types type = PIPE_NORM,QGraphicsItem* parent = nullptr);
     QPainterPath shape() const override;
     QRectF boundingRect() const override;
+    QRectF realRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
     int type() const override;

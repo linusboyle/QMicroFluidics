@@ -7,8 +7,6 @@ class ConfigurationEntity;
 class QMenu;
 class EditorView;
 
-#define PIPE_LENGTH qreal(80)
-#define PIPE_WIDTH qreal(10)
 #define PIPE_REAL_WIDTH qreal(200)
 
 class PipeScene : public QGraphicsScene
