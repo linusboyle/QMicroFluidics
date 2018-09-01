@@ -285,6 +285,5 @@ void PipeScene::changePipeColor(QVector<qreal> velocity){
     for(int i=0,n=velocity.size();i<n;++i){
         QColor newcolor = colorFilter(velocity.at(i));
         items.value(i)->setDefaultColor(newcolor);
-        qDebug()<<i<<newcolor;
     }
 }
